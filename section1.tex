@@ -1,195 +1,329 @@
 \section{Probability}
 
-$\mathbb{E}(AB) \geq \mathbb{E}(A)\mathbb{E}(B)$\\
-$\text{cvxfunc}(E[X]) \leq E[\text{cvxfunc}(X)]$\\
-Sigmoid function: $\sigma(x) = \frac{e^x}{1+e^x}$\\
-$\sigma'(x) = \sigma(x)(1-\sigma(x))$\\
-$\mathbb{P}(X, Y) = \mathbb{P}(X|Y)\mathbb{P}(Y) = \mathbb{P}(Y|X)\mathbb{P}(X)$\\
-Cond. Independ.: $\mathbb{P}(X|Y, Z) = \mathbb{P}(X|Z)$\\
-Chernoff Bound: Boolean $X$, $N$ i.i.d draws, $P(X_i=1)=p$, MLE of $p$ is $\bar{p}=\frac{1}{N}\sum x_i$. For all $p \in [0, 1]$, $\epsilon > 0$, $P(|p-\bar{p}| > \epsilon) \leq 2e^{-2N\epsilon^2}$\\
-Hoeffding's inequality: $X \in [0, 1]$, $\mathbb{P}(\bar{X} - E[\bar{X}] \geq t) \leq e^{-2nt^2}$\\
-Markov's inequality: for all $a > 0$ for nonnegative $Z$, $P(Z \geq a) \leq E[Z]/a$
+$\mathbb{E}(AB) \geq \mathbb{E}(A)\mathbb{E}(B)$.\\
+$\text{cvxfunc}(E[X]) \leq E[\text{cvxfunc}(X)]$.\\
+Sigmoid function: $\sigma(x) = \frac{e^x}{1+e^x}$.\\
+$\sigma'(x) = \sigma(x)(1-\sigma(x))$.\\
+$\mathbb{P}(X, Y) = \mathbb{P}(X|Y)\mathbb{P}(Y) = \mathbb{P}(Y|X)\mathbb{P}(X)$.\\
+Cond. Independ.: $\mathbb{P}(X|Y, Z) = \mathbb{P}(X|Z)$.\\
+Chernoff Bound: Boolean $X$, $N$ i.i.d draws, $P(X_i=1)=p$, MLE of $p$ is $\hat{p}=\frac{1}{N}\sum x_i$. For all $p \in [0, 1]$, $\epsilon > 0$, $P(|p-\hat{p}| > \epsilon) \leq 2e^{-2N\epsilon^2}$.\\
+Hoeffding's inequality: $X \in [0, 1]$, $\mathbb{P}(\hat{X} - E[\hat{X}] \geq t) \leq e^{-2nt^2}$.\\
+Markov's inequality: for all $a > 0$ for nonnegative $Z$, $P(Z \geq a) \leq E[Z]/a$.\\
+Normal Distribution: $N(\mu, \sigma^2) = \frac{1}{\sqrt{2 \pi \sigma^2}}\exp(-(x-\mu)^2/2\sigma^2)$.\\
+Multi-variate ND: $N(\mu, \Sigma) = \frac{\exp(-\frac{1}{2}(x-\mu)^T\Sigma^{-1}(x-\mu))}{\sqrt{(2\pi)^k |\Sigma|}}$, $k$ is dim of $x$.
 
 \section{Matrix Differential}
 
-$\frac{\partial Ax}{\partial z} = A\frac{\partial x}{\partial z}$\\
-$\frac{\partial y^T A x}{\partial x} = y^T A$, $\frac{\partial y^T A x}{\partial y} = x^T A^T$\\
-$\frac{\partial y^T x}{\partial z} = x^T\frac{\partial y}{\partial z} + y^T \frac{\partial x}{\partial z}$\\
-$\frac{\partial y^T A x}{\partial z} = x^T A^T \frac{\partial y}{\partial z} + y^T A\frac{\partial x}{\partial z}$\\
-$\frac{\partial A^{-1}}{\partial \alpha} = -A^{-1}\frac{\partial A}{\partial \alpha} A^{-1}$
+$\frac{\partial Ax}{\partial z} = A\frac{\partial x}{\partial z}$.\\
+$\frac{\partial y^T A x}{\partial x} = y^T A$, $\frac{\partial y^T A x}{\partial y} = x^T A^T$.\\
+$\frac{\partial y^T x}{\partial z} = x^T\frac{\partial y}{\partial z} + y^T \frac{\partial x}{\partial z}$.\\
+$\frac{\partial y^T A x}{\partial z} = x^T A^T \frac{\partial y}{\partial z} + y^T A\frac{\partial x}{\partial z}$.\\
+$\frac{\partial A^{-1}}{\partial \alpha} = -A^{-1}\frac{\partial A}{\partial \alpha} A^{-1}$.
+
+\section{Linear Algebra}
+
+Norm: $||x||_p = (\sum |x_i|^p)^{1/p}$.\\
+$\text{trace}$: sum of elements on main diag.\\
+$\Phi(\Phi^T \Phi)^{-1}\Phi^T$ takes $v$ and projects onto space spanned by columns of $\Phi$. Lease-square solutiuon $f=\Phi w^*$, $w^*=(\Phi^T \Phi)^{-1}\Phi^T Y$ corresponds to an projection of target Y onto span $\Phi$.\\
 
 \section{Foundations}
 
 \subsection*{Probability Model \& Bayes Classifier}
 
-$\eta(x) = \mathbb{P}(Y=1|X=x) = \mathbb{E}[Y|X=x]$\\
-$L(h) = L_{\mathbb{P}}(h) = \mathbb{P}(h(X)\neq Y)$\\
-$L^* = \inf_h \mathbb{P}(h(X) \neq Y) = \mathbb{E}[\min\{\eta(X), 1-\eta(X)\}] = \frac{1}{2} - \frac{1}{2}\mathbb{E}[|2\eta(X) - 1|]$
+$\eta(x) = \mathbb{P}(Y=1|X=x) = \mathbb{E}[Y|X=x]$.\\
+$L(h) = L_{\mathbb{P}}(h) = \mathbb{P}(h(X)\neq Y)$.\\
+$L^* = \inf_h \mathbb{P}(h(X) \neq Y) = \mathbb{E}[\min\{\eta(X), 1-\eta(X)\}] = \frac{1}{2} - \frac{1}{2}\mathbb{E}[|2\eta(X) - 1|]$.
+
+\subsection*{Proof of BC Optimality}
+
+$\mathbb{P}(h(X) \neq Y | X = x) = 1 - \mathbb{P}(Y = h(X)|X=x) = 1 - (P(Y=1,h(X)=1|X=x) + P(Y=0,h(X)=0|X=x)) = 1 - ([[h(x)=1]]P(Y=1|X=x) + [[h(x)=0]]P(Y=0|X=x)) = 1 - ([[h(x)=1]]\eta(x) + [[h(x)=0]](1-\eta(x)))$. So for every $x$, $P(h(X) \neq Y|X=x) - P(h^*(X) \neq Y | X=x) = \eta(x)([[h^*(x)=1]] - [[h(x)=1]]) + (1-\eta(x))([[h^*(x)=0]]-[[h(x)=0]]) = (2\eta(x) - 1)([[h^*(x)=1]]-[[h(x)=1]]) \geq 0$.
 
 \subsection*{Nearest Neighbor Classifier}
 
-$L_{NN} = \mathbb{E}[2\eta(X)(1-\eta(X))]$ asymptotically\\
-$L^* \leq L_{NN} \leq 2L^*(1-L^*)$
+$L_{NN} = \mathbb{E}[2\eta(X)(1-\eta(X))]$ asymptotically.\\
+$L_{NN} = 2E[\eta(x)(1-\eta(x))] \leq 2E[\eta(x)]E[1-\eta(x)] = 2L^*(1-L^*)$.
 
 \subsection*{Empirical Risk Minimization}
 
-$\epsilon_{\text{apx}} = \min_{h \in H}L(h)$, $\epsilon_{\text{est}} = L_\mathbb{P}(h_S) - \epsilon_{\text{apx}}$\\
-$\epsilon_{\text{est}}$ increases as $\log |H|$ decreases with $N$
+No-free-lunch Theorem: No such universal learning algorithm $A$ and a training set size $N$ exists, such that for every distribution $P(X,Y)$, if $A$ receives $N$ i.i.d. examples from $P$, there is a high chance it outputs a predictor $h$ that has a low risk.\\
+Bias-complexity tradeoff: $\epsilon_{\text{apx}} = \min_{h \in H}L(h)$, $\epsilon_{\text{est}} = L_\mathbb{P}(h_S) - \epsilon_{\text{apx}}$.\\
+Apx. Error: how much risk due to inductive bias.\\
+Est. Error: because empirical risk is just proxy of true risk, increases as $\log |H|$ decreases with $N$.
 
 \section{Linear classifiers}
 
-\subsection*{Definitions}
-
-$h(x) = \text{sgn}(f(x))$, $f(x) = w^T x + w_0$\\
-Hinge loss: $l_{\text{h}}(z) = \max(0, 1-z)$\\
-Logistic loss: $l_{\log}(z) = \log(1+e^{-z})$\\
-0/1 loss: $l_{\text{0/1}} = [[z \leq 0]]$, $z = yf(x)$
+$h(x) = \text{sgn}(f(x))$, $f(x) = w^T x + w_0$ (confidence), $w$ weight vector/parameter, $w_0$ offset/bias, $z = yf(x)$.\\
+Hinge loss: $l_{\text{h}}(z) = \max(0, 1-z)$.\\
+Logistic loss: $l_{\log}(z) = \log(1+e^{-z})$.\\
+0/1 loss: $l_{\text{0/1}} = [[z \leq 0]]$.
 
 \subsection*{Logistic Regression}
 
-Model $\mathbb{P}(Y=1|X, w)$ as $\sigma(w x +w_0)$ and use this as $\eta(x)$ to build Bayes Classifier.\\
-Max. likelihood $P(S|w) = \prod \mathbb{P}(y_i|x_i)$\\
-Min. negative log-likelihood:\\
-$L(w) = -\sum[y_i \log \sigma(w^T x_i) + (1 - y_i) \log(1 - \sigma(w^T x_i)]$ (cross entropy), or $\sum \log(1 + \exp(-y_i w^T x_i))$ when we use $y \in \{-1, 1\}$\\
-Regularization: add $\lambda ||w||$ (convex)
+ERM: $\min L_S = 1/N \sum log(1+e^{-y_i(w^T x_i + w_0)})$.\\
+Bayes: Model $\mathbb{P}(Y=1|X, w)$ as $\sigma(w x +w_0)$ and use this as $\eta(x)$ to build Bayes Classifier.\\
+Max. likelihood $P(S|w) = \prod \mathbb{P}(y_i|x_i)$.\\
+Min. negative log-likelihood: $L(w) = -\sum[y_i \log \sigma(w^T x_i) + (1 - y_i) \log(1 - \sigma(w^T x_i)]$ (cross entropy), or $\sum \log(1 + \exp(-y_i w^T x_i))$ when we use labels $\in \{-1, 1\}$.\\
+Linear separable setting: $||w|| \rightarrow \inf$ (ERM no min), end up overfitting.\\
+Regularization: add $\lambda ||w||$ (convex).
 
 \subsection*{Support Vector Machine}
 
-$L_S = \frac{1}{2}||w||^2 + \frac{C}{N} \sum \max(0, 1-y_i(w^T x_i + w_0))$, $\min |w^T x_i + w_0| = 1$, margin $2/||w||$\\
-Goal: maximize margin between SVs\\
-$\mathbb{P}(\text{test err}) \leq \text{margin err} + \text{O}(1/\text{margin})$\\
-Hard SVM: $\min ||w||^2/2$ given $y_i(w^T x_i + w_0) \geq 1$, solve using Lagrangians:\\
-$L = \frac{1}{2} ||w||^2 - \sum \alpha_i [y_i(w^T x_i + w_0) - 1]$\\
-Stationarity: ${\partial L}/{\partial w}=0$, ${\partial L}/{\partial w_0} = 0$\\
-Complement: $\alpha_i [y_i (w^T x_i + w_0) - 1] = 0$\\
-Primal Feasibility: $y_i (w^T x_i + w_0) \geq 1$\\
-Dual Feasibility: $\alpha_i \geq 0$\\
-$w = \sum \alpha_i y_i x_i$, $\sum \alpha_i y_i = 0$ (hyperplane is linear comb. of training data), $\alpha > 0$: SV\\
-Soft SVM: $\min ||w||^2/2 + C \sum \epsilon_i$, given $y_i(w^T x_i + w_0) \geq 1 - \epsilon_i$, $\epsilon_i > 0$\\
-$\epsilon$: violation distance (0 for margin met)\\
-Dual: $\max (-1/2) ||\sum \alpha_i x_i y_i||^2 + \sum \alpha_i$, given $\sum y_i \alpha_i = 0$, $0 \leq \alpha_i \leq C$\\
-$\alpha=0$: correct, $=C$: in margin, $< C$: SV\\
-$\sum \alpha_i = \text{margin}^{-2}$\\
-Kernel: $k(x, x') = \langle \phi(x), \phi(x') \rangle$, $w = \sum\alpha_i y_i \phi(x_i)$, $h(x) = \text{sgn}(\langle w, \phi(x) \rangle + w_0)$\\
+$L_S = \frac{1}{2}||w||^2 + \frac{C}{N} \sum \max(0, 1-y_i(w^T x_i + w_0))$.\\
+Canonical normalization: $\min |w^T x_i + w_0| = 1$.\\
+Margin: $1/||w||$, distance between SV and boundary. Goal is to max. it.\\
+Dist. to boundary: $\frac{w^x + w_0}{||w||}$.\\
+$\mathbb{P}(\text{test err}) \leq \text{margin err} + \text{O}(1/\text{margin})$.
+
+\subsection*{Hard SVM Optimization Problem}
+
+$\min ||w||^2/2$ given $y_i(w^T x_i + w_0) \geq 1$.\\
+$L = \frac{1}{2} ||w||^2 - \sum \alpha_i [y_i(w^T x_i + w_0) - 1]$.\\
+Stationarity: ${\partial L}/{\partial w}=0$, ${\partial L}/{\partial w_0} = 0$.\\
+Complementarity: $\alpha_i [y_i (w^T x_i + w_0) - 1] = 0$.\\
+Primal Feasibility: $y_i (w^T x_i + w_0) \geq 1$.\\
+Dual Feasibility: $\alpha_i \geq 0$.\\
+$w = \sum \alpha_i y_i x_i$, $\sum \alpha_i y_i = 0$ (hyperplane is linear comb. of training data).\\
+$\alpha > 0$: SV (lie on the margin).
+
+\subsection*{Soft SVM Optimization Problem}
+
+$\min ||w||^2/2 + C \sum \epsilon_i$, given $y_i(w^T x_i + w_0) \geq 1 - \epsilon_i$, $\epsilon_i \geq 0$.\\
+$C$ small: soft, large: hard.\\
+$\epsilon$: violation distance (0 for margin constraint met).\\
+Dual: $\max (-1/2) ||\sum \alpha_i x_i y_i||^2 + \sum \alpha_i$, given $\sum y_i \alpha_i = 0$, $0 \leq \alpha_i \leq C$.\\
+$\alpha=0$: correct; $\alpha=C$: in margin; $0 < \alpha < C$: SV.\\
+$\sum \alpha_i = \text{margin}^{-2}$.
+
+\subsection*{Kernel SVM}
+
+Kernel: $k(x, x') = \langle \phi(x), \phi(x') \rangle$.\\
+$h(x) = \text{sgn}(\langle w, \phi(x) \rangle + w_0)$.\\
+$w = \sum\alpha_i y_i \phi(x_i)$.\\
+Kernel has to be symmetric.\\
+If $k(x, x')$ is kernel then $e^{k(x, x')}$ also.\\
+Mercer's: For any symmetric function $k$, if $\int_{X \times X}k(x, x')f(x)f(x')dxdx' \geq 0$ for all $f$ that $\int_{-\inf}^{\inf}f^2dx$ is finite.\\
+$||\phi(x) - \phi(x')||^2 = ||\phi(x)||^2+||\phi(x')||^2-2\langle \phi(x), \phi(x')\rangle = k(x, x) + k(x', x') - 2k(x, x')$.\\
+Kernel matrix $K_{ij} = k(x_i, x_j)$.\\
 Gaussian RBF: $\exp(-\lambda ||x - x'||^2)$\\
 Laplacian RBF: $\exp(-\lambda ||x - x'||)$\\
 Polynomial: $(\langle x, x' \rangle + c)^d$, $c \geq 0$
 
 \section{Naive Bayes}
 
-Generative: $h(x) = \text{argmax}_y \mathbb{P}(X=x, Y=y) = \mathbb{P}(X=x|Y=y)\mathbb{P}(Y=y)$\\
-Discr.: $h(x) = \text{argmax}_y \mathbb{P}(Y=y|X=x)$\\
-ERM: minimize $L_S(h)$ over $h \in H$\\
-Discr. ignores data dist. $\mathbb{P}(X)$\\
-Naive Bayes: assume cond. independ. of features given class, $\mathbb{P}(X|Y) = \prod \mathbb{P}(X_d|Y)$\\
-$\text{argmax}_y \mathbb{P}(y|x) = \mathbb{P}(y) \prod \mathbb{P}(x_d|y)$\\
-NB is linear classifier, $\epsilon(LR, \inf) \leq \epsilon(NB, \inf)$\\
-For LR in $d$ dim., with high prob. $\epsilon(LR, N) \leq \epsilon(LR, \inf) + \text{O}(\sqrt{\frac{d}{N}\log\frac{N}{d}})$
+\subsection*{Three Learning Approaches}
+
+Given training dataset $S$:\\
+Generative: Use $S$ to build a model $\hat{P}(X,Y)$ of $P(X,Y)$ and classify via $h(x) = \text{argmax}_{y \in Y} \hat{P}(X=x, Y=y) = \hat{P}(X=x|Y=y) \hat{P}(Y=y)$.\\
+Discriminative: Use $S$ to directly build a model $\hat{P}(Y|X)$ and define $h(x) = \text{argmax}_{y\in Y} \hat{P}(Y=y|X=x)$.\\
+ERM: Use $S$ to minimize $L_S(h)$ over $h \in H$.\\
+Discr. classifiers roughly learn the boundary between classes, while generative ones learn what individual classes look like.\\
+$P(X,Y)=P(X|Y)P(Y) = P(Y|X)P(X)$, discr. only model $P(Y|X)$ and ignores data dist $P(X)$; gen. cares both and models $P(X|Y)$ and $P(Y)$.
+
+\subsection*{Naive Bayes}
+
+Naive Bayes: $P(Y|X)=\frac{P(X|Y)P(Y)}{P(X)}$, and $P(X) = \sum_Y P(X|Y)P(Y)$.\\
+Classification: $\text{argmax}_y P(X=x|Y=y)P(Y=y)$.\\
+Naive: assume cond. independence of features given class label, $\mathbb{P}(X|Y) \prod \mathbb{P}(X_d|Y)$.\\
+$\text{argmax}_y \mathbb{P}(Y=y|X_1, \dots, X_d) = \mathbb{P}(Y=y) \prod \mathbb{P}(X_d|Y=y)$.\\
+NB is linear classifier: $X \in {0, 1}^d$, $h_{NB}(x) = \text{sgn}(w^T x + w_0)$.
+
+\subsection*{NB vs LR}
+
+Def: $\epsilon(h_{A, N}) = L(h_{A, S})$, $N = |S|$, algo. $A$.\\
+$\epsilon(LR, \inf) \leq \epsilon(NB, \inf)$.\\
+$h_{LR, N}$ is in $d$ dim., with high prob., $\epsilon(h{LR, N}) \leq \epsilon(h{LR, \inf}) + \text{O}(\sqrt{\frac{d}{N}\log\frac{N}{d}})$.\\
+Let any $\epsilon_1, \delta > 0$ and any $l \geq 0$ be fixed. Assume for fixed $\rho_0 > 0$ we have that $\rho_0 \leq p(y=T) \leq 1-\rho_0$. Let $m=\text{O}((1/\epsilon_1^2)\log(n/\delta))$. Then with prob. at least $1-\delta$, $|\hat{p}(x_i|y=b)-p(x_i|y=b)|\leq \epsilon_1$ and $|\hat{p}(y=b)-p(y=b)|\leq \epsilon_1$ for all $i$, and $b \in Y$.\\
+Def. $G(\tau) = P_{(x, y) \sim D}[(l_{\text{Gen}, \inf}\in [0, \tau n]\wedge y=T) \vee (l_{\text{Gen}, \inf}\in [-\tau n, 0] \wedge y=F)$. Assume for some fixed $\rho_0 > 0$ we have $\rho_0 \leq p(y=T) \leq 1-\rho_0$, and either $\rho_0 \leq p(x_i=1|y=b) \leq 1-\rho_0$ for all $i$, $b$ (discrete inputs), or $\sigma_i^2 \geq \rho_0$ (continuous case). Then with high prob. $\epsilon(h_{\text{Gen}} \leq \epsilon(h_{\text{Gen}, \inf} + G(\text{O}(\sqrt{\frac{1}{m}\log n}))$.\\
+If the condition of last theorem holds, and $G(\tau) \leq \epsilon_0 / 2 + F(\tau)$ for some function $F(\tau)$ that has $F(\tau) \rightarrow 0$ as $\tau \rightarrow 0$, and some fixed $\epsilon_0 > 0$. Then for $\epsilon(h_{\text{Gen}} \leq \epsilon(h_{\text{Gen}, \inf} + \epsilon_0)$ to hold with high prob., it suffices to pick $m = \Omega(\log n)$.
 
 \section{Learning Theory}
 
+\subsection*{Realizability}
+
 Realizability: there is a hypothesis $h^* \in H$ that $L(h^*) = 0$. This implies that over random sample $S$, the loss $L_S(h^*)=0$
-(with prob$=1$) for items in $S$ drawn according to the data distribution. Realizability also implies that $L_S(h_S)=0$ for every ERM hypothesis $h_S$\\
-PAC: Aim: Find $h$ in $H$ such that $L(h) \leq \epsilon$, can be attained. Assumption: $L(h^*)=0$ and thus $L_S(h_S)=0$ (i.e., 0 training error). Then for $N \geq N(\epsilon, \delta)$, $L(h_S) \leq \epsilon$, with prob $\geq 1-\delta$\\
-Since training data $S$ is randomly drawn $\sim P(X,Y)$, there is a chance that it may be noninformative; hence a $\delta$ confidence parameter. Even when $S$ faithfully represents $P$, it may miss some details (it is just a finite sample) and cause our classifier to make minor errors; we tolerate these up to $\epsilon$\\
-Any finite hypothesis class $H$ is PAC, and $N(\epsilon, \delta) \leq \text{O}(\log|H|\delta/\epsilon)$\\
-PAC-learnability requires: estimation error should be bounded uniformly over all distributions for a given hyp. class. (apx. error depends on the fit of prior to the underlying distribution\\
-Agnostic PAC: with high probability $L(h) \leq \inf_{h \in H} L(h) + \epsilon$ (come $\epsilon$-close to the best classifier in the hypothesis class)\\
-$\epsilon$-representative sample: for all $h \in H$, $|L_S(h) - L_D(h)| \leq \epsilon$\\
-If $\epsilon / 2$-representative, $L_D(h_S) \leq \min L_D(h) + \epsilon$\\
-VC-dim: size of largest subset of $X$ that can be shattered by $H$ (every possible labelling, there is one $h \in H$ that can classify\\
-Restriction: $H$ is class of functions from $X$ to $\{0, 1\}$, $C={c_1, c_2, \dots, c_m} \in X$. $H_C$ (restriction of $H$ to $C$) is the set of functions from $C$ to $\{0, 1\}$ that can be derived from $H$. $H_C = {(h(c_1), \dots, h(c_m)): h\in H}$, where each function is represented as a vector $\in \{0, 1\}^{|C|}$\\
-Shattering: $|H_C| = 2^{|C|}$\\
-The following are equivalent: $H$ has the uniform convergence property; Any ERM rule is a successful agnostic PAC learner for $H$; $H$ is agnostic PAC learnable; $H$ is PAC learnable; Any ERM rule is a successful PAC learner for $H$; H has a finite VC-dimension.\\
-Growth function: $\tau_H(m)$ is the number of different function (labellings) from set $C$ of size $m$ to $\{0, 1\}$ that can be obtained by restricting $H$ to $C$.\\
-Sauer: $\text{VCDim}(H) \leq d < \inf$, then $\tau_H(m) \leq \sum_{i=1}^d m\text{C}i$, and if $m > d + 1$ then $\tau_H(m) \leq (em/d)^d$.\\
-For every distribution $P(X, Y)$ and every $\delta \in (0, 1)$, with prob. $1 - \delta$ over the choice of $S \sim P$, $|L_P(h) - L_S(h)| \leq \frac{4 + \sqrt{\log \tau_H(2N)}}{\delta \sqrt{2N}}$
+(with prob$=1$) for items in $S$ drawn according to the data distribution. Realizability also implies that $L_S(h_S)=0$ for every ERM hypothesis $h_S$. In other words, a risk of $0$ is possible using our hypothesis class $H$ and ERM leads to a training error of $0$. Need to worry about bounding test error (because it may or may not be the case that $h_S=h^*$, so $L(h_S) \geq 0$).
+
+\subsection*{PAC Learnability}
+Say hypothesis class $H$ “rich” so that we have realizability. PAC-learnability of class $H$ means that “enough” number of random examples drawn from the data distribution will allow approx. risk minimization, i.e., ensure $L(h) \leq \epsilon$, with prob. $\geq 1-\delta$, where “enough” depends on the desired tolerances $(\epsilon, \delta)$. The $\delta$ arises due to randomness of $S$ drawn from $P$, while $\epsilon$ arises due to the actual hypothesis picked by the learner.\\
+PAC Aim: Find $h$ in $H$ such that $L(h) \leq \epsilon$, can be attained. Assumption: $L(h^*)=0$ and thus $L_S(h_S)=0$ (i.e., 0 training error). Then for $N \geq N(\epsilon, \delta)$, $L(h_S) \leq \epsilon$, with prob $\geq 1-\delta$.\\
+Since training data $S$ is randomly drawn $\sim P(X,Y)$, there is a chance that it may be noninformative; hence a $\delta$ confidence parameter. Even when $S$ faithfully represents $P$, it may miss some details (it is just a finite sample) and cause our classifier to make minor errors; we tolerate these up to $\epsilon$.\\
+Any finite hypothesis class $H$ is PAC, and $N(\epsilon, \delta) \leq \text{O}(\log|H|\delta/\epsilon)$.\\
+Agnostic PAC: If realizability does not hold, with high probability $L_{P}(h) \leq \inf_{h \in H} L_{P}(h) + \epsilon$ (come $\epsilon$-close to the best classifier in the hypothesis class).
+
+\subsection*{Uniform Convergence}
+
+$\epsilon$-representative sample $S$: for all $h \in H$, $|L_S(h) - L_D(h)| \leq \epsilon$.\\
+If $\epsilon / 2$-representative then $L_D(h_S) \leq \min L_D(h) + \epsilon$, $h_S$ is ERM output.\\
+PAC-learnability requires: estimation error should be bounded uniformly over all distributions for a given hyp. class. (apx. error depends on the fit of prior to the underlying distribution).
+
+\subsection*{VC Dimension}
+
+VC-dim: size of largest subset of $X$ that can be shattered by $H$ (every possible labelling, there is one $h \in H$ that can classify).\\
+Restriction: $H$ is class of functions from $X$ to $\{0, 1\}$, $C={c_1, c_2, \dots, c_m} \subset X$. $H_C$ (restriction of $H$ to $C$) is the set of functions from $C$ to $\{0, 1\}$ that can be derived from $H$. i.e. $H_C = {(h(c_1), \dots, h(c_m)): h\in H}$, where each function is represented as a vector $\in \{0, 1\}^{|C|}$.\\
+Shattering: $|H_C| = 2^{|C|}$.\\
+The following are equivalent: $H$ has the uniform convergence property; Any ERM rule is a successful agnostic PAC learner for $H$; $H$ is agnostic PAC learnable; $H$ is PAC learnable; Any ERM rule is a successful PAC learner for $H$; $H$ has a finite VC-dimension.\\
+Growth function: $\tau_H(m)$ is the number of different functions (labelings) from set $C$ of size $m$ to $\{0, 1\}$ that can be obtained by restricting $H$ to $C$.\\
+Sauer: $\text{VCDim}(H) \leq d < \infty$, then $\tau_H(m) \leq \sum_{i=1}^d \binom{m}{i}$. If $m > d + 1$ then $\tau_H(m) \leq (em/d)^d$.\\
+For every distribution $P(X, Y)$ and every $\delta \in (0, 1)$, with prob. $1 - \delta$ over the choice of $S \sim P$, $|L_P(h) - L_S(h)| \leq \frac{4 + \sqrt{\log \tau_H(2N)}}{\delta \sqrt{2N}}$.\\
+If VCDim finite, then $N_{H}^{\text{UC}}(\epsilon, \delta) \leq \widetilde{O}(d/(\delta \epsilon)^2)$, O-tilde hides log factors.\\
+VCDim for $d$-dim linear separator is $d+1$.\\
+VCDim for finite set $\leq \log_2|H|$.
 
 \section{Linear Regression}
 
 \subsection*{Set Up}
 
-Correlation Coefficient: $r = \frac{1}{N} \sum \left(\frac{x_i-\bar{x}}{\sigma_x}\right)\left(\frac{y_i-\bar{y}}{\sigma_y}\right) = \frac{\text{cov}(x, y)}{\sigma_x \sigma_y}$\\
-Least-squares Regression: $\min 1/N \sum(h(x_i) - y_i)^2$\\
-Linear least-squares regression: $h(x) = w_0+ w^T x$\\
-$w = \frac{\mathbb{E}[XY] - \mathbb{E}[X]\mathbb{E}[Y]}{\sigma_X^2} = r \cdot \frac{\sigma_Y}{\sigma_X}$\\
-$\eta(x) = \mathbb{E}[Y|X = x]$ always performs the best\\
+Correlation Coefficient: $r = \frac{1}{N} \sum \left(\frac{x_i-\bar{x}}{\sigma_x}\right)\left(\frac{y_i-\bar{y}}{\sigma_y}\right) = \frac{\text{cov}(x, y)}{\sigma_x \sigma_y}$.\\
+Least-squares Regression: $\min 1/N \sum(h(x_i) - y_i)^2$.\\
+Linear least-squares regression: $h(x) = w_0+ w^T x$.\\
+$w = \frac{\mathbb{E}[XY] - \mathbb{E}[X]\mathbb{E}[Y]}{\sigma_X^2} = r \cdot \frac{\sigma_Y}{\sigma_X}$.\\
+$\eta(x) = \mathbb{E}[Y|X = x]$ always performs the best.\\
 
 \subsection*{Linear least-squares}
 
-$\min_w L(w) = \sum (y_i - w^T x_i)^2 = ||X w - y||^2$, $X \in \mathbb{R}^{N \times d}, y \in \mathbb{R}^N, w \in \mathbb{R}^d$\\
-$L(w) = w^T X^T X w - 2 w^T X^T t + y^T y$\\
-$\nabla L(w) = 2 X^T X w - 2 X^T y$\\
-$w = (X^T X)^{-1} X^T y$\\
-Observation Model: $y = w^T x + \eta$, $\eta \sim N(0, \sigma^2 I)$, observe true $x$ and noisy $y$, use them to get $\bar{w}$\\
-Error: $1/N \sigma(\bar{y_i} - \mathbb{E}[y_i])^2 = 1/N ||X\bar{w} - Xw||^2$\\
-As number of samples $N$ grows, error goes to 0
+$\min_w L(w) = \sum (y_i - w^T x_i)^2 = ||X w - y||^2$, $X \in \mathbb{R}^{N \times d}, y \in \mathbb{R}^N, w \in \mathbb{R}^d$.\\
+$L(w) = w^T X^T X w - 2 w^T X^T t + y^T y$.\\
+$\nabla L(w) = 2 X^T X w - 2 X^T y$.\\
+$w = (X^T X)^{-1} X^T y$.\\
+Observation Model: $y = w^T x + \eta$, $\eta \sim N(0, \sigma^2 I)$, observe true $x$ and noisy $y$, use them to estimate $w$ by $\hat{w}$ using least-squares.\\
+Error: $1/N \sigma(\hat{y_i} - \mathbb{E}[y_i])^2 = 1/N ||X\hat{w} - Xw||^2$.\\
+As number of samples $N$ grows, error goes to 0.
 
 \subsection*{Kernelized Ridge Regression}
 
-$y = w^T \phi(x) + w_0 = E[Y=y | X=x]$\\
-$\min L(w) = 1/N \sum(y_i - w^T \phi(x_i))^2 + \lambda ||w||^2$\\
-Solution: $w = \sum \alpha_i \phi(x_i)$\\
-$w^T \phi(x) = \sum \alpha_i k(x_i, x)$\\
-$\alpha = (K + N \lambda I)^{-1}y$\\
+$y = w^T \phi(x) + w_0 = E[Y=y | X=x]$.\\
+$\min L(w) = 1/N \sum(y_i - w^T \phi(x_i))^2 + \lambda ||w||^2$.\\
+Solution: $w = \sum \alpha_i \phi(x_i)$.\\
+$w^T \phi(x) = \sum \alpha_i k(x_i, x)$.\\
+$\alpha = (K + N \lambda I)^{-1}y$.
 
 \subsection*{Regularization}
 
-Observation: $y = f(x) + \eta$
-Expected error: $\mathbb{E}[||y - \bar{y}||^2] =$ sum of inherent noise, squared bias, variance\\
-Bias: $\mathbb{E}[\bar{f}(x) - f(x)]$\\
-Variance: $\mathbb{E}[\bar{y}^2] - \mathbb{E}[\bar{y}]^2$\\
-$\mathbb{E}[||y - \bar{f}||^2] = \mathbb{E}[||\eta||^2] + \mathbb{E}[||f - \mathbb{E}\bar{f}||^2] + \mathbb{E}[||\bar{f} - \mathbb{E}\bar{f}||^2]$\\
-Gauss-Markov: Linear least-squares is the best (lowest variance) unbiased linear\\
+Observation: $y = f(x) + \eta$, get predictor $\hat{f}(x)$, make prediction $\hat{y} = \hat{f}(x)$.\\
+Expected error: $\mathbb{E}[||y - \hat{y}||^2] = \text{inherent noise} + \text{bias}^2 + \text{variance}[\hat{y}]$.\\
+$\text{Bias}[\hat{f}(x)] = E[\hat{f}(x) - f(x)]$.\\
+$\text{Var}[\hat{y}] = E[\hat{y}^2] - E[\hat{y}]^2$.\\
+$\mathbb{E}[||y - \hat{f}||^2] = \mathbb{E}[||\eta||^2] + \mathbb{E}[||f - \mathbb{E}\hat{f}||^2] + \mathbb{E}[||\hat{f} - \mathbb{E}\hat{f}||^2]$.\\
+Gauss-Markov: Linear least-squares is the best (lowest variance) unbiased linear.\\
+Trade off: Increase complexity, higher variance, lower bias.
 
 \subsection*{Ridge Regression}
 
-$\min L(w) = 1/N \sum(y_i - w^T x_i)^2 + \lambda ||w||^2$\\
-$N \lambda w + X^T X w = X^T y$, so $w = (X^T X + N \lambda I)^{-1} X^T y$\\
-$w_{\text{RR}} = (I + N \lambda (X^T X)^{-1})^{-1} w_{\text{LS}}$\\
-$\text{Var}[w_{\text{RR}}] = \text{Var}[A w_{\text{LS}}] = A \text{Var}[w_{\text{LS}}] A^T$\\
-$\text{Var}[w_{\text{LS}}] = \sigma^2 (X^T X)^{-1}$\\
-Kernelized: define $Z = E[y]$, $\bar{z} = K(K+n\lambda I)^{-1}y$, bias: $\eta \lambda^2 z^T (K + n\lambda I)^{-2} z$, variance: $\frac{1}{n}\text{tr} C K^2 (K+n\lambda I)^{-2}$\\
+$\min L(w) = 1/N \sum(y_i - w^T x_i)^2 + \lambda ||w||^2$.\\
+$N \lambda w + X^T X w = X^T y$, so $w = (X^T X + N \lambda I)^{-1} X^T y$.\\
+Let $M = X^T X$, $w_{\text{RR}} = (M+N\lambda I)^{-1}MM^{-1}X^Ty = [M(I+N\lambda M^{-1}]^{-1}M[M^{-1}X^T y] = (I+N\lambda M^{-1})^{-1} M^{-1}Mw_{\text{LS}} = (I + N \lambda M^{-1})^{-1} w_{\text{LS}}$. So Ridge is biased.\\
+$\text{Var}[w_{\text{RR}}] = \text{Var}[A w_{\text{LS}}] = A \text{Var}[w_{\text{LS}}] A^T$, $A$ defined above.\\
+$\text{Var}[w_{\text{LS}}] = \sigma^2 (X^T X)^{-1}$.\\
+Kernelized: define $Z = E[y]$, $\hat{z} = K(K+n\lambda I)^{-1}y$, $\text{bias}(K) = \eta \lambda^2 z^T (K + n\lambda I)^{-2} z$, $\text{var}(K) = \frac{1}{n}\text{trace} C K^2 (K+n\lambda I)^{-2}$.
 
 \subsection*{LASSO Regression}
 
-Can auto select relevant features (sparsity), small values are pushed to zero\\
-Ridge: minimize $(y-w)^2 + \lambda w^2$, $w = y/(1+\lambda)$\\
-LASSO: minimize $(y-w)^2 + \lambda |w|$, $w = y-\lambda/2$ for $y > \lambda/2$, $y + \lambda / 2$ for $y < -\lambda/2$, $0$ for otherwise\\
+Can auto select relevant features (sparsity), small values are pushed to zero.\\
+Ridge: minimize $(y-w)^2 + \lambda w^2$, $w = y/(1+\lambda)$.\\
+LASSO: minimize $(y-w)^2 + \lambda |w|$, $w = y-\lambda/2$ for $y > \lambda/2$, $y + \lambda / 2$ for $y < -\lambda/2$, $0$ for otherwise.
+
+\subsection*{MLE View}
+
+MLE View: Model $P(Y|X)$ directly, assume $Y | X \sim N(w^T x, s)$.\\
+$w = \text{argmax} \prod P(y_i|x_i, w) = \text{argmax} log P = \text{argmax} - \sum (y_i - w^T x_i)^2$.
 
 \subsection*{Bayesian View}
 
-MLE: Model $P(Y|X)$ directly, assume $Y | X \sim N(w^T x, s)$\\
-$w = \text{argmax} \prod P(y_i|x_i, w) = \text{argmax} log P = \text{argmax} - \sum (y_i - w^T x_i)^2$\\
-
-Bayesian: priors $w \sim N(\mu_0, S_0)$, $P(w) = \exp (-1/2 (w - \mu_0)^T S_0^{-1} (w - \mu_0))$, $P(\text{data}|w) = \exp(-\frac{1}{2\sigma^2} ||y - X w||^2)$\\
-Posterior $P(w|\text{data}) = P(\text{data}|w) \times P(w) = \exp(-\frac{1}{2\sigma^2} ||y - X w||^2 - \frac{1}{2}(w - \mu_0)^T S_0^{-1}(w-\mu_0)) = \exp(-\frac{1}{2} w^T J w + h^T w)$, where $J = S_0^{-1} + \sigma^{-2} X^T X$, $h = S_0^{-1}\mu_0 + \sigma^{-2} y^T X$\\
-Standard form $N(\mu, \Sigma)$, $\exp(-\frac{1}{2}(x-\mu)^T\Sigma^{-1}(x-\mu))$\\
-Information form $N^{-1}(h, J)$, $\exp(-\frac{1}{2}x^t J x + h^T x)$\\
-$\Sigma^{-1} = J$, $\mu = J^{-1} h$\\
-$P(w|\text{data})$ is Gaussian $N(\mu_N, S_N)$ with parameters $S_N^{-1} = J$, $\mu_N = S_N h$\\
-$S_0 = s^2I$, $\mu_0 = 0$ leads to ridge regression\\
-$y|w \sim N(w^T x, \sigma^2)$, $w \sim N(\mu_N, S_N)$\\
-$E[y] = E[w]^T x = \mu_N^T x$, $\text{Var}[y] = \sigma_N^2(x) = x^T S_N x + \sigma^2$
+$P(\text{parameters}|\text{data}) \propto P(\text{data}|\text{parameters}) \times P(\text{parameters})$, denote $\text{parameters}$ as $w$ from now.\\
+Priors over model parameters: $w \sim N(\mu_0, S_0)$, $P(w) \propto \exp (-1/2 (w - \mu_0)^T S_0^{-1} (w - \mu_0))$.\\
+Data distribution: $P(\text{data}|w) \propto \exp(-\frac{1}{2\sigma^2} ||y - X w||^2)$.\\
+Posterior: $P(w|\text{data}) \propto P(\text{data}|w) \times P(w) = \exp(-\frac{1}{2\sigma^2} ||y - X w||^2 - \frac{1}{2}(w - \mu_0)^T S_0^{-1}(w-\mu_0)) = \exp(-\frac{1}{2} w^T J w + h^T w)$.\\
+Def $J = S_0^{-1} + \sigma^{-2} X^T X$, $h = S_0^{-1}\mu_0 + \sigma^{-2} y^T X$ (posterior on model params).\\
+Standard form $N(\mu, \Sigma)$, $\exp(-\frac{1}{2}(x-\mu)^T\Sigma^{-1}(x-\mu))$.\\
+Information form $N^{-1}(h, J)$, $\exp(-\frac{1}{2}x^t J x + h^T x)$.\\
+$\Sigma^{-1} = J$, $\mu = J^{-1} h$.\\
+$P(w|\text{data})$ is Gaussian $N(\mu_N, S_N)$ with parameters $S_N^{-1} = J$, $\mu_N = S_N h$.\\
+$S_0 = s^2I$, $\mu_0 = 0$ leads to ridge regression.\\
+$y|w \sim N(w^T x, \sigma^2)$, $w \sim N(\mu_N, S_N)$.\\
+$E[y] = E[w]^T x = \mu_N^T x$, $\text{Var}[y] = \sigma_N^2(x) = x^T S_N x + \sigma^2$.
 
 \section{Neural Networks}
 
-NN can approximate any continuous function arbitrarily well if and only if the activation function is not a polynomial\\
-Rectifier: $\max(0, z)$\\
+\subsection*{Power of expressiveness}
 
+Any bounded nonconstant activation allows 1-hidden layer net be a universal approximator.\\
+NN can approximate any continuous function arbitrarily well if and only if the activation function is not a polynomial.\\
+Rectifier: $\max(0, z)$.\\
+Expressivity of ReLUs: approximate univariate continuous functions by piecewise constant ones; use 1 with ReLUs to build continuous approximation to indicator functions; repeat construction for each input dimension; combine linearly, and threshold using another ReLU layer; combine linearly such approx indicator functions using last layer.
 
 \subsection*{Training}
-$\min R_N(\theta) = \frac{1}{N}\sum l(y_i, F(x_i, \theta))$\\
-$l(y, z) = max(0, 1-yz)$, $l(y, z) = \frac{1}{2}(y-z)^2$\\
-SGD: $\theta \leftarrow \theta - \eta \frac{\partial l(y, F(x; \theta))}{\partial \theta}$\\
-$a^l = (a_1^l, a_2^l, \dots, a_{m'}^l)$, $m'$ units in layer $l$\\
-$z^l = (W^l)^T a^{l-1} + b^l$\\
-$a^l = f(z^l)$\\
-$\frac{\partial l}{\partial W^l} = \frac{\partial z^l}{\partial W^l}[\frac{\partial l}{\partial z^l}] = \frac{\partial z^l}{\partial W^l}(\delta^l)^T$\\
-$\delta^l = \frac{\partial l}{\partial z^l} = \frac{\partial z^{l+1}}{\partial z^l}\cdot\frac{\partial l}{\partial z^{l+1}} = \frac{\partial z^{l+1}}{\partial z^l} \cdot \delta^{l+1}$\\
-$z^{l+1} = (W^{l+1})f(z^l) + b^{l+1}$, so $\frac{\partial z^{l+1}}{\partial z^l} = \text{Diag}[f'(z^l)]W^{l+1}$\\
-$\delta^l = \text{Diag}[f'(z^l)]W^{l+1}\cdot\text{Diag}[f'(z^{l+1})]W^{l+2} \cdot \dots \cdot W^{L}\delta^L$\\
-$\delta^L = \text{Diag}[f'(z^L)]\frac{\partial l}{\partial a^L}$\\
-Gradients used in Backprop: $\frac{\partial l}{\partial W^l} = a^{l-1}\delta^l$, $\frac{\partial l}{\partial b^l} = \delta^l$\\
+
 Dropout: turn off units when training, cut weights when testing\\
-RNN: $s_t = \tanh(W^{s,s}s_{t-1} + W^{s, x}x_t)$\\
+Why Dropout: 
+ERM: $\min R_N(\theta) = \frac{1}{N}\sum l(y_i, F(x_i, \theta))$.\\
+$l(y, z) = max(0, 1-yz)$, $l(y, z) = \frac{1}{2}(y-z)^2$.\\
+SGD: $\theta \leftarrow \theta - \eta \frac{\partial l(y, F(x; \theta))}{\partial \theta}$.\\
+$a^l = (a_1^l, a_2^l, \dots, a_{m'}^l)$, $m'$ units in layer $l$.\\
+$z^l = (W^l)^T a^{l-1} + b^l$.\\
+$a^l = f(z^l)$.\\
+$\frac{\partial l}{\partial W^l} = \frac{\partial z^l}{\partial W^l}[\frac{\partial l}{\partial z^l}] = \frac{\partial z^l}{\partial W^l}(\delta^l)^T$.\\
+$\delta^l = \frac{\partial l}{\partial z^l} = \frac{\partial z^{l+1}}{\partial z^l}\cdot\frac{\partial l}{\partial z^{l+1}} = \frac{\partial z^{l+1}}{\partial z^l} \cdot \delta^{l+1}$.\\
+$z^{l+1} = (W^{l+1})f(z^l) + b^{l+1}$, so $\frac{\partial z^{l+1}}{\partial z^l} = \text{Diag}[f'(z^l)]W^{l+1}$.\\
+$\delta^l = \frac{\partial l}{\partial z^l} = \text{Diag}[f'(z^l)]W^{l+1}\delta^{l+1}.$\\
+$\delta^l = \text{Diag}[f'(z^l)]W^{l+1}\cdot\text{Diag}[f'(z^{l+1})]W^{l+2} \dots W^{L}\delta^L$.\\
+$\delta^L = \text{Diag}[f'(z^L)]\frac{\partial l}{\partial a^L}$.\\
+
+\subsection*{Backprob Algo}
+Input: $(x, y)$ set activations for $a^1$ input layer.\\
+Feedforward: for each layer $l=2, \dots, L$ do, $z^l = (W^l)^T a^{l-1} + b^l$ and $a^l = f(z^l)$.\\
+Output layer: $\delta^L = \text{Diag}[f'(z^L)]\nabla_a \text{loss}$.\\
+Backprop: for each layer $l=2, \dots, L$ do, $\delta^l = \text{Diag}[f'(z^l)]W^{l+1}\delta^{l+1}$.\\
+Final gradients: $\frac{\partial l}{\partial W^l} = a^{l-1}\delta^l$, $\frac{\partial l}{\partial b^l} = \delta^l$.
+
+\subsection*{CNN}
+
+Stride: filter move step.\\
+Receptive field: size of region in input image that influences the activation of that unit. 
+
+\subsection*{RNN}
+
+$s_t = \tanh(W^{s,s}s_{t-1} + W^{s, x}x_t)$.\\
+Input received at each layer, parameter between layer shared.\\
+Language model: $P(x_1, x_2, \dots, x_T) = P(x_1)\prod_2^T Pr(x_t|x_1, \dots, x_{t-1})$.
+
+\section{Exercises}
+
+\subsection*{GaussI, GaussX, LinLog, QuadLog}
+
+Compare conditional log-likelihood $p(y|x, \hat{\theta}, \text{Model})$.\\
+GaussI: class conditional densities $P(x|y=c) = N(x|\mu_c, I)$.\\
+GaussX: $N(x|\mu_c, \Sigma_c)$.\\
+LinLog: linear features logistic regression.\\
+QuadLog: quadratic features logistic regression.\\
+GaussI $\leq$ LinLog: same posteriors, LinLog maximizes cond.\\
+GaussX $\leq$ QuadLog: same posteriors, QuadLog maximized cond.\\
+LinLog $\leq$ QuadLog: QuadLog is wider.\\
+GaussI $\leq$ QuadLog: same as above.\\
+Note, that higher log likelihood not necessarily lead to better classification error.
+
+\subsection*{Weighted Linear Regression}
+
+Attach weight $r_i$ for sample $x_i$, $w = (\Phi^T R \Phi)^{-1}\Phi^T R Y$, where $R = \text{Diag}(r_1, r_2, \dots)$. $r_i$ is the inverse variance of sample $i$, or number of repeated samples.
+
+\subsection*{MLE and Bayes}
+
+$P(D|w)$: likelihood, probability of $D$ taking this set, given paraeter $w$.\\
+$P(w|D)$: posterior density, after seeing samples one by one.
+
+\subsection*{Convolutional Network}
+
+Filter size $F$, stride size $S$, padding (each size) $P$, input size $W$: number of conv operations is $(W-F+2P)/S + 1$.
+
+\subsection*{Exploding Gradients in RNN}
+
+We have $\frac{\partial l}{\partial h^t} = \frac{\partial l}{\partial h^{t+1}} \phi'(z^t)w$.\\
+Make sure that $\frac{\partial l}{\partial h^t} = \frac{\partial l}{\partial h^{t+1}}$.
+
+\subsection*{Neural Networks}
+
+Determine too small LR: compare with larger LR to see if learns faster.\\
+Determine too large LR: SGD oscillate dramatically.\\
+Can not use training set to determine large LR.\\
+Can use $1 \times 1$ convolution to learn linear classifier, if input has multi channels.\\
+Number of training samples should be larger than number of weights.\\
+For ConvNet, $A$ contains all $(h, k)$ that $w_{hk}^l=w_{ij}^l$. Then $\frac{\partial l}{\partial w_{ij}^l} = \sum_A \frac{\partial z_k^l}{\partial w_{hk}^l} \frac{\partial l}{\partial z_k^l} = \sum_A a_h^{l-1} \delta_k^l$.
