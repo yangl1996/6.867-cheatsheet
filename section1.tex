@@ -278,7 +278,8 @@ Final gradients: $\frac{\partial l}{\partial W^l} = a^{l-1}\delta^l$, $\frac{\pa
 \subsection*{CNN}
 
 Stride: filter move step.\\
-Receptive field: size of region in input image that influences the activation of that unit. 
+Receptive field: size of region in input image that influences the activation of that unit.\\
+For ConvNet, $A$ contains all $(h, k)$ that $w_{hk}^l=w_{ij}^l$. Then $\frac{\partial l}{\partial w_{ij}^l} = \sum_A \frac{\partial z_k^l}{\partial w_{hk}^l} \frac{\partial l}{\partial z_k^l} = \sum_A a_h^{l-1} \delta_k^l$.
 
 \subsection*{RNN}
 
@@ -325,5 +326,4 @@ Determine too small LR: compare with larger LR to see if learns faster.\\
 Determine too large LR: SGD oscillate dramatically.\\
 Can not use training set to determine large LR.\\
 Can use $1 \times 1$ convolution to learn linear classifier, if input has multi channels.\\
-Number of training samples should be larger than number of weights.\\
-For ConvNet, $A$ contains all $(h, k)$ that $w_{hk}^l=w_{ij}^l$. Then $\frac{\partial l}{\partial w_{ij}^l} = \sum_A \frac{\partial z_k^l}{\partial w_{hk}^l} \frac{\partial l}{\partial z_k^l} = \sum_A a_h^{l-1} \delta_k^l$.
+Number of training samples should be larger than number of weights.
