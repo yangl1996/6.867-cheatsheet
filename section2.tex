@@ -78,4 +78,21 @@ Projection: ($i$-th dim of projected $x$) $y_i(x) = \phi(x)^T v_i = \sum_n a_{in
 
 \subsection*{Spiked Covariance Model}
 
+Latent direction of interest: $v \in \mathbb{R}^d$, $v^Tv = ||v||^2 = 1$.\\
+Data: $X_i = Y_i v + Z_i$, $Y_i \sim N(0, 1)$, $Z_i \sim N(0, \sigma^2I_{d\times d})$.\\
+Mean: $E[X_i] = E[Y_i]v + E[Z_i] = 0$.\\
+Covariance: $\Sigma = E[X_iX_i^T] = E[Y_i^2]vv^T + E[Z_iZ_i^T] = vv^T + \sigma^2I$.\\
+Principle component (eigenvector) of covariance: $(vv^T + \sigma^2 I)v=v(v^Tv)+\sigma^2 v = (1+\sigma^2)v$.\\
+Latent direction of interest captured by eigenvector of covariance matrix. PCA does that using empirical covariance.\\
+Empirical Cov.: $S = \frac{1}{N}\sum_i X_i X_i^T$.\\
+Use matrix concentration: with prob. $1-\delta$, $||S-\Sigma||_{\text{op}} \leq \text{const} ||\Sigma||_{\text{op}} \min(\sqrt{\frac{d+\log\frac{1}{\delta}}{N}}, \frac{d+\log\frac{1}{\delta}}{N})$. i.e., when $N \sim d$, $S \approx \Sigma$. If $k$-sparse, replace $d$ with $k$.\\
+Use Davis-Kahan $\sin(\theta)$: $A$, $B$ are $d\times d$ PSD. $(\lambda_i, u_i)$, $(\mu_i, v_i)$ ranked eigenvalue/vector-pairs. $\sin(\angle(u_1, v_1))\leq \frac{2}{\max(\lambda_1 - \lambda_2, \mu_1 - \mu_2)} ||A-B||_{\text{op}}$. And $\min_{\epsilon\in{\pm1}}|\epsilon u_1 - v_1|_2^2 \leq 2 \sin^2(\angle(u_1, v_1))$.
+
+\subsection*{Random Projection}
+
+Data: $x_1, \dots, x_N$, $x_n \in \mathbb{R}^d$. Project to $\mathbb{R}^m$ and preserve distances.\\
+Method: sample $m$ random vectors $W_1, \dots, W_m \in N(0, I_{d\times d})$, project $x_n$ as $(W_1^Tx_n, \dots, W_m^Tx_n)$.\\
+Johnson-Lindenstrauss: $\epsilon, \delta \in (0, 1)$, let $m \geq \text{const}\frac{\log N/\delta}{\epsilon^2}$. Then for $1 \leq i, j \leq N$, $1-\epsilon \leq \frac{\frac{1}{\sqrt{m}}||W x_i - W x_j||_2}{||x_i - x_j||_2} \leq 1+\epsilon$ with prob. $1-\delta$. (i.e. projecting into $\log N$-dim preserves distance.)\\
+Proof: Let $x = x_i - x_j$ for $||x||_2=1$ then we interested in $\frac{1}{\sqrt{m}}||Wx||_2$. Since $Wx \sim N(0, I_{m\times m})$, $||Wx||_2^2 = \sum_{i=1}^m Z_i^2$ where $Z_i \sim N(0, 1)$. Use Chernoff, $P(|\frac{1}{m}\sum_{i=1}^m Z_i^2-1| \geq \epsilon) \leq 2 \exp(-m\epsilon^2/6)$. Select $m \geq \text{const}\frac{\log N / \delta}{\epsilon^2}$.
+
 
