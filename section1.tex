@@ -24,7 +24,7 @@ $\frac{\partial A^{-1}}{\partial \alpha} = -A^{-1}\frac{\partial A}{\partial \al
 
 Norm: $||x||_p = (\sum |x_i|^p)^{1/p}$.\\
 $\text{trace}$: sum of elements on main diag.\\
-$\Phi(\Phi^T \Phi)^{-1}\Phi^T$ takes $v$ and projects onto space spanned by columns of $\Phi$. Lease-square solutiuon $f=\Phi w^*$, $w^*=(\Phi^T \Phi)^{-1}\Phi^T Y$ corresponds to an projection of target Y onto span $\Phi$.\\
+$\Phi(\Phi^T \Phi)^{-1}\Phi^T$ takes $v$ and projects onto space spanned by columns of $\Phi$. Lease-square solution $f=\Phi w^*$, $w^*=(\Phi^T \Phi)^{-1}\Phi^T Y$ corresponds to an projection of target Y onto span $\Phi$.
 
 \section{Foundations}
 
@@ -36,7 +36,9 @@ $L^* = \inf_h \mathbb{P}(h(X) \neq Y) = \mathbb{E}[\min\{\eta(X), 1-\eta(X)\}] =
 
 \subsection*{Proof of BC Optimality}
 
+\begin{mdframed}
 $\mathbb{P}(h(X) \neq Y | X = x) = 1 - \mathbb{P}(Y = h(X)|X=x) = 1 - (P(Y=1,h(X)=1|X=x) + P(Y=0,h(X)=0|X=x)) = 1 - ([[h(x)=1]]P(Y=1|X=x) + [[h(x)=0]]P(Y=0|X=x)) = 1 - ([[h(x)=1]]\eta(x) + [[h(x)=0]](1-\eta(x)))$. So for every $x$, $P(h(X) \neq Y|X=x) - P(h^*(X) \neq Y | X=x) = \eta(x)([[h^*(x)=1]] - [[h(x)=1]]) + (1-\eta(x))([[h^*(x)=0]]-[[h(x)=0]]) = (2\eta(x) - 1)([[h^*(x)=1]]-[[h(x)=1]]) \geq 0$.
+\end{mdframed}
 
 \subsection*{Nearest Neighbor Classifier}
 
@@ -99,7 +101,7 @@ $\sum \alpha_i = \text{margin}^{-2}$.
 Kernel: $k(x, x') = \langle \phi(x), \phi(x') \rangle$.\\
 $h(x) = \text{sgn}(\langle w, \phi(x) \rangle + w_0)$.\\
 $w = \sum\alpha_i y_i \phi(x_i)$.\\
-Kernel has to be symmetric.\\
+Kernel has to be symmetric and positive semidefinite ($x^TMx \geq 0$ for any non-zero $x$).\\
 If $k(x, x')$ is kernel then $e^{k(x, x')}$ also.\\
 Mercer's: For any symmetric function $k$, if $\int_{X \times X}k(x, x')f(x)f(x')dxdx' \geq 0$ for all $f$ that $\int_{-\inf}^{\inf}f^2dx$ is finite.\\
 $||\phi(x) - \phi(x')||^2 = ||\phi(x)||^2+||\phi(x')||^2-2\langle \phi(x), \phi(x')\rangle = k(x, x) + k(x', x') - 2k(x, x')$.\\
@@ -256,7 +258,7 @@ Expressivity of ReLUs: approximate univariate continuous functions by piecewise 
 Dropout: turn off units when training, cut weights when testing\\
 Why Dropout: 
 ERM: $\min R_N(\theta) = \frac{1}{N}\sum l(y_i, F(x_i, \theta))$.\\
-$l(y, z) = max(0, 1-yz)$, $l(y, z) = \frac{1}{2}(y-z)^2$.\\
+$l(y, z) = max(0, 1-yz)$, or $l(y, z) = \frac{1}{2}(y-z)^2$.\\
 SGD: $\theta \leftarrow \theta - \eta \frac{\partial l(y, F(x; \theta))}{\partial \theta}$.\\
 $a^l = (a_1^l, a_2^l, \dots, a_{m'}^l)$, $m'$ units in layer $l$.\\
 $z^l = (W^l)^T a^{l-1} + b^l$.\\
@@ -325,5 +327,5 @@ Make sure that $\frac{\partial l}{\partial h^t} = \frac{\partial l}{\partial h^{
 Determine too small LR: compare with larger LR to see if learns faster.\\
 Determine too large LR: SGD oscillate dramatically.\\
 Can not use training set to determine large LR.\\
-Can use $1 \times 1$ convolution to learn linear classifier, if input has multi channels.\\
+Can use $1 \times 1$ convolution to learn linear classifier, if input has multiple channels.\\
 Number of training samples should be larger than number of weights.

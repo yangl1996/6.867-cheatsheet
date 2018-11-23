@@ -1,0 +1,81 @@
+\section{When Train $\neq$ Test}
+
+Test distribution $q(x, y)$ differs from training $p(x, y)$.\\
+Transfer learning: labeled $p(x, y)$, labeled $q(x, y)$.\\
+Importance reweighting: labeled $p$, unlabeled $q$.\\
+Robustness to perturbations: labeled $p$, no $q$.
+
+\subsection*{Transfer Learning}
+
+Transfer learning for linear model: learn $w_{old}$ using $p$, then learn from $q$ using L1 or L2 regularization $||w-w_{old}||$. This corresponds to MAP estimation with a different prior.\\
+Transfer learning for NN: cut top levels, train a small model to classify from existing features.\\
+Transfer learning for RNN: use pre-trained word embeddings.
+
+\subsection*{Importance Reweighting}
+
+Objective: $\min_\theta E_{x, y\sim q}[L(x, y; \theta)]$ using samples from $p(x, y)$.\\
+$\frac{1}{|S|}\sum_{t=1}^{|S|}\frac{q(x^t, y^t)}{p(x^t, y^t)}L(x^t, y^t; \theta)$ is an unbaised estimator of $E_{x, y\sim q}[L(x, y; \theta)]$, where $S=\{(x^t, y^t)\sim p\}$.\\
+Proof: $E_S[\frac{1}{|S|}\sum_{t=1}^{|S|}\frac{q(x^t, y^t)}{p(x^t, y^t)}L(x^t, y^t; \theta)]=E_p[\frac{q(x^t, y^t)}{p(x^t, y^t)}L(x^t, y^t; \theta)]=\int_{x, y}p(x,y)\frac{q(x^t, y^t)}{p(x^t, y^t)}L(x^t, y^t; \theta)=\int_{x, y}q(x, y)L(x, y; \theta) = E_q[L(x, y; \theta)]$.\\
+$\beta = q(x, y) / p(x, y)$.\\
+Variance could be high when $\beta$ is large, may penalize $||\beta||$.\\
+SVM: $\min_w \frac{1}{2} ||w||^2 + C \sum_t \beta_t \max(0, y_t(1-wx_t))$.\\
+LR: $\min_w \frac{\lambda}{2}||w||^2 + \sum_t -\beta_t \log p(y_t|x_t; w)$.\\
+Ridge: $w=(\lambda \text{diag}(\beta^{-1})+ X^TX)^{-1}X^TY$.\\
+Class Imbalance: $\beta = \frac{q(x, y)}{p(x, y)} = \frac{q(y)q(x|y)}{p(y)p(x|y)} = \frac{q(y)}{p(y)}$. Notice $p(x|y)=q(x|y)$.\\
+Selection Bias: For sample $(x, y) \sim q$, flip coin $S \sim p(S | x; \lambda)$. If $S=1$ reject, $S=0$ keep the sample. $p(x, y) = \frac{q(x, y) p(S=1|x; \lambda)}{\int_{x, y}q(x, y) p(S=1|x; \lambda)} = Cq(x, y)p(S=1|x; \lambda)$ (marginalize over $S$).\\
+Covariate Shift: $p(x)$ changes but $p(y|x)$ does not. $q(x, y) = q(x)p(y|x)$, $\beta = q(x)/p(x)$. Only need unlabeled data from $q$ to correct.
+
+\subsection*{Adversarial Robustness}
+
+Objective: An adversary who know $w$ (for linear model) and $x$, $y$ (input and true label) can choose $k$ features to delete fro $x$ to screw up prediction.\\
+$\min_w \max_{\alpha_1, \dots, \alpha_n} \frac{1}{2}||w||^2+C\sum_i h^{wc}(w, y_i x_i)$.\\
+$h^{wc}(w, y_i x_i) = max(0, 1-y_iw(x_i \odot (1-\alpha_i))$ (worst-case hinge loss), $\alpha_i\in\{0, 1\}^d$ selects features to delete, $\sum_j \alpha_{ij} = k$.\\
+Solution: Apply adversarial deletion in SGD at each step.
+
+\section{PCA}
+
+Find structure and learn relevant subspaces.\\
+Data: $x_1, \dots, x_N \in \mathbb{R}^d$, project into $\mathbb{R}^m$, $m << d$.
+
+\subsection*{Max. Variance}
+
+First consider projecting to $1$-dimension: $x_n \rightarrow u_1^T x_n$, $n \in [N]$, $u_1 \in \mathbb{R}^d$, $u_1^T u_1 = 1$.\\
+Mean: $u_1^T\bar{x}$.\\
+Variance is $\frac{1}{N}\sum_n(u_1^T x_n - u_1^T \bar{x})^2 = u_1^T S u_1$, $S = \frac{1}{N}\sum_n (x_n - \bar{x})(x_n - \bar{x})^T$.\\
+Goal: Max. $u_1^T S u_1$ s.t. $u_1^T u_1 = 1$.\\
+Lagrangian: $L(u_1, \lambda_1) = u_1^T S u_1 - \lambda_1(u_1^T u_1 - 1)$, $\nabla_{u_1}L = 2 S u_1 - 2 \lambda_1 u_1$.\\
+Sol.: $S u_1 = \lambda_1 u_1$, $u_1^T S u_1 = \lambda_1$. Meaning that $u_1$ is eigenvector, $\lambda_1$ is eigenvalue of $S$.\\
+Project to $m$-dimension, $x_n \rightarrow (u_1^T x_n, \dots, u_m^T x_n)$, $n \in [N]$. $u_1, \dots, u_m$ are top $m$ eigenvectors of $S$.
+
+\subsection*{Min. Projection Error}
+
+$u_1, \dots, u_d$ are orthogonal unit basis of $\mathbb{R}^d$.\\
+Affine projection on $\mathbb{R}_m$ ($m < d$): $x_n \rightarrow \tilde{x}_n = \sum_{i=1}^m z_{in}u_i + \sum_{i=m+1}^d b_i u_i$.\\
+Goal: Min. $J = \frac{1}{N} \sum_n (x_n - \tilde{x}_n)^T(x_n - \tilde{x}_n)$.\\
+Let $x_n = \sum_{i=1}^d \alpha_{in}u_i$, $\alpha_{in} = u_i^T x_n$ (since $u$ is basis). $J = \frac{1}{N}(\sum_{i=1}^m \sum_n (\alpha_{in} - z_{in})^2) + \frac{1}{N}(\sum_{i=m+1}^d \sum_n (\alpha_{in} - b_i)^2)$.\\
+Sol.: $z_{in} = \alpha_{in}$ ($i \leq m$). $b_i = \frac{1}{N}\sum_n \alpha_{in} = u_i^T \bar{x}$ ($m < i \leq d$).\\
+$J = \sum_{i=m+1}^d(u_i^T \bar{x} - u_i^T x_n)^2 = \sum_{i=m+1}^d u_i^T S u_i$. Pick $u_1, \dots, u_m$ to be top eigenvectors of $S$.
+
+\subsection*{PCA Applications}
+
+Encoder, decoder: $U = [u_1, \dots, u_m] \in \mathbb{R}^{d \times m}$. $x \rightarrow U^T x \rightarrow UU^T x$, first step is encoding, second step is decoding.\\
+Principle Component Regression: eigendecomposition ($X^T X = U \Lambda U^T$, $X$ is centered data matrix), encode ($x_n \rightarrow U^T x_n = \tilde{x}_n$), Ordinary Least Sq. ($\hat{\beta}_m = (\tilde{X}^T\tilde{X})^{-1}\tilde{X}^Ty$), decode ($\hat{\beta} = U \hat{\beta}_m$).
+
+\subsection*{PCA Implementation}
+
+Data matrix: $X = [x_1 - \bar{x}, \dots, x_N - \bar{x}]^T \in \mathbb{R}^{N \times d}$.\\
+Covariance matrix: $S = \frac{1}{N}X^TX$. $\frac{1}{N}X^TXu_i = \lambda_i u_i$.\\
+$\frac{1}{N}XX^T(Xu_i) = \lambda_i (Xu_i)$, so $\frac{1}{N}XX^T v_i = \lambda_i v_i$ where $v_i = X u_i$. So $v_i$ is eigenvector of $Q = \frac{1}{N}XX^T$, $u_i \propto X^T v_i$.\\
+$Xu_i \propto XX^T v_i \propto Qv_i \propto \lambda_i v_i$.
+
+\subsection*{Non-linear PCA}
+
+Centered data ($\bar{x} = 0$), non-linear $x \rightarrow \phi(x)$. $S' = \frac{1}{N}\sum_n \phi(x_n) \phi(x_n)^T$, top eigenvectors $S'v_i = \lambda_i v_i$, $i \in [m]$.\\
+$\frac{1}{N}\sum_n \phi(x_n)(\phi(x_n)^T v_i) = \lambda_i v_i$, so $v_i = \sum_n a_{in}\phi(x_n)$.\\
+$S' v_i = \frac{1}{N}\sum_n \phi(x_n)\phi(x_n)^T \sum_p a_{ip}\phi(x_p) = \lambda_i \sum_p a_{ip}\phi(x_p)$, $\frac{1}{N}\sum_n \phi(x_l)^T \phi(x_n) \sum_p a_{ip}\phi(x_n)^T \phi(x_p) = \lambda_i \sum_p a_{ip}\phi(x_l)^T \phi(x_p)$, $\frac{1}{N}\sum_n K(x_l, x_n) \sum_p a_{ip}K(x_n, x_p) = \lambda_i \sum_p a_{ip}K(x_l, x_p)$.\\
+$K^2 a_i = \lambda_i NKa_i$, $Ka_i = \lambda_i Na_i$.\\
+Projection: ($i$-th dim of projected $x$) $y_i(x) = \phi(x)^T v_i = \sum_n a_{in}\phi(x)^T\phi(x_n) = \sum_n a_{in} K(x, x_n)$.
+
+\subsection*{Spiked Covariance Model}
+
+
