@@ -123,3 +123,26 @@ Gradient Descent: $F = \sum_{(i, j)\in \Omega}(\sum_{q=1}^r U_{iq} V_{jq} - Y_{i
 
 Find most similar user/item and use that rating. Can do weighted.
 
+\section{Clustering}
+
+\subsection*{K-Means}
+
+Pick $K$ random points as cluster centers. Assign points to nearest center. Move center to average of assigned points. Stop when no assignment changes.\\
+Theorem: each iter. monotonically decreases the objective $\sum_{i=1}^N \min_{k\in1:K}||x_i - \mu_k||_2^2$, $\mu_k$ is cluster center.
+
+\subsection*{Agglomerative Clustering}
+
+Maintain a set of clusters. Initially each instance in its own cluster. Repeat: pick two closest clusters; merge them; stop when only one cluster left.\\
+Produces a family of clusterings like a tree diagram.\\
+Def. of closest: closest pair (single-link), farthest pair (complete-link), avg. of all pairs.\\
+Strict ordering: all points are more similar to points in own cluster than any point in other cluster.\\
+Theorem: if ground truth clustering has strict ordering, it can be found by single-link clustering.
+
+\subsection*{Gaussian Mixture Models}
+
+$P(Y)$: choose a cluster $Y=1, \dots, K$ ($K$ clusters).\\
+$P(X|Y)$: each cluster generates data $\sim N(\mu_k, \Sigma_k)$.\\
+$p(x) = \sum_{k=1}^K \pi_k N(x|\mu_k, \Sigma_k)$, $\pi_k=P(y=k)$ (mixing component).\\
+Learn with maximizing marginal likelihood of $x$: $\max_{\{\pi\}, \{\mu\}, \{\Sigma\}}\sum_{i=1}^N\log p(x_i; \{\pi\},\{\mu\},\{\Sigma\})$.\\
+Expectation maximization: $\pi, \mu, \Sigma \leftarrow \text{argmax}_{\pi, \mu, \Sigma}\sum_{i=1}^N E_{p(y|x_i;\pi,\mu,\Sigma)}[\log p(y,x_i;\pi,\mu,\Sigma)]$.\\
+Two-cluster EM: responsibility $\gamma_i = P(y=2|x_i;\pi,\mu,\sigma^2) =  \frac{\pi\phi_2(x_i)}{(1-\pi)\phi_1(x_i)+\pi\phi_2(x_i)}$, $i=1, \dots, N$, $\phi$ is CDF of normal distribution. $\mu_1=\frac{\sum(1-\gamma_i)x_i}{\sum(1-\gamma_i)}$, $\sigma_1^2=\frac{\sum(1-\gamma_i)(x_i-\mu_i)^2}{\sum(1-\gamma_i)}$. For $\mu_2$, $\sigma_2^2$ replace $(1-\gamma_i)$ with $\gamma_i$. $\pi = \sum \gamma_i/N$
