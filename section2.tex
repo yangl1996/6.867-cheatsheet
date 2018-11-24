@@ -95,4 +95,31 @@ Method: sample $m$ random vectors $W_1, \dots, W_m \in N(0, I_{d\times d})$, pro
 Johnson-Lindenstrauss: $\epsilon, \delta \in (0, 1)$, let $m \geq \text{const}\frac{\log N/\delta}{\epsilon^2}$. Then for $1 \leq i, j \leq N$, $1-\epsilon \leq \frac{\frac{1}{\sqrt{m}}||W x_i - W x_j||_2}{||x_i - x_j||_2} \leq 1+\epsilon$ with prob. $1-\delta$. (i.e. projecting into $\log N$-dim preserves distance.)\\
 Proof: Let $x = x_i - x_j$ for $||x||_2=1$ then we interested in $\frac{1}{\sqrt{m}}||Wx||_2$. Since $Wx \sim N(0, I_{m\times m})$, $||Wx||_2^2 = \sum_{i=1}^m Z_i^2$ where $Z_i \sim N(0, 1)$. Use Chernoff, $P(|\frac{1}{m}\sum_{i=1}^m Z_i^2-1| \geq \epsilon) \leq 2 \exp(-m\epsilon^2/6)$. Select $m \geq \text{const}\frac{\log N / \delta}{\epsilon^2}$.
 
+\section{Matrix Estimation}
+
+\subsection*{Model}
+Ground truth: $A = [A_{ij}] \in \mathbb{R}^{n \times m}$.\\
+Noisy observations: $Y_{ij}$ for $(i, j) \in \Omega \subseteq [n] \times [m]$. $E[Y_{ij}] = A_{ij}$.\\
+Goal: Produce estimate $\hat{A}_{ij}$, $\forall (i, j) \in [n] \times [m]$ that $\hat{A}_{ij}\approx A_{ij}$ (MSE).\\
+Model: sample latent feature $x_1(i) \in \chi_1$ for rows $i \in [n]$, $x_2(j) \in \chi_2$ for cols $j \in [m]$. Ground truth $A$ has $A_{ij} = f(x_1(i), x_2(j))$ ($f$ is latent function). Observation $Y_{ij}$ has $E[Y_{ij} | x_1(i), x_2(j)] = A_{ij}.$ Observe each $Y_{ij}$ with prob. $p$.
+
+\subsection*{Singular Value Thresholding}
+
+Replace missing $Y_{ij}$ with $0$.\\
+Compute SVD of $Y$: $Y = \sum_{k=1}^{\min(m, n)}\sigma_k u_k v_k^T$. $u_k \in \mathbb{S}_n$, $v_k \in \mathbb{S}_m$, $\sigma_k \geq 0$, $\mathbb{S}$ is unit sphere.\\
+Pick top components and rescale: $\hat{A} = \alpha \sum_{k \in S} \sigma_k u_k v_k^T$, $S = \{k: \sigma_k \geq \text{threshold}\}$, $\alpha=mn/|\Omega|$.
+
+\subsection*{Convex Optimization}
+
+Minimize $||Z||_*$ over $R^{n\times m}$ s.t. $Z_{ij} \approx Y_{ij}$ for $(i, j) \in \Omega$.\\
+
+\subsection*{Non-convex Optimization}
+
+Minimize MSE. Let $Z$ have rank $r$, $Z = UV^T$, $U \in \mathbb{R}^{n \times r}$, $V \in \mathbb{R}^{m \times r}$. Minimize $\sum_{(i, j)\in\Omega}(U_i^T V_j - Y_{ij})^2$ over $U_i, V_j \in \mathbb{R}^r$.\\
+Alternative Least Squares: Iteratively fix $U$ and $V$ and optimize the other (solves Ordinary Least Sqaures).\\
+Gradient Descent: $F = \sum_{(i, j)\in \Omega}(\sum_{q=1}^r U_{iq} V_{jq} - Y_{ij})^2$, $\frac{\partial F}{\partial U_{il}} = 2 \sum_{j \in \Omega} (\sum_q U_{iq}V_{jq} - Y_{ij})V_{jl}$, $\frac{\partial F}{\partial V_{jl}} = 2 \sum_{i \in \Omega} (\sum_q U_{iq}V_{jq} - Y_{ij})U_{il}$.
+
+\subsection*{Collaborative Filtering}
+
+Find most similar user/item and use that rating. Can do weighted.
 

@@ -23,8 +23,11 @@ $\frac{\partial A^{-1}}{\partial \alpha} = -A^{-1}\frac{\partial A}{\partial \al
 \section{Linear Algebra}
 
 Norm: $||x||_p = (\sum |x_i|^p)^{1/p}$.\\
+Nuclear Norm: $||Z||_* = \sum_k\sigma_k$, $Z = \sum_k \sigma_k u_k v_k^T$ (SVD).\\
 $\text{trace}$: sum of elements on main diag.\\
-$\Phi(\Phi^T \Phi)^{-1}\Phi^T$ takes $v$ and projects onto space spanned by columns of $\Phi$. Lease-square solution $f=\Phi w^*$, $w^*=(\Phi^T \Phi)^{-1}\Phi^T Y$ corresponds to an projection of target Y onto span $\Phi$.
+$\Phi(\Phi^T \Phi)^{-1}\Phi^T$ takes $v$ and projects onto space spanned by columns of $\Phi$. Lease-square solution $f=\Phi w^*$, $w^*=(\Phi^T \Phi)^{-1}\Phi^T Y$ corresponds to an projection of target Y onto span $\Phi$.\\
+$Av=\sigma u$ and $A^Tu=\sigma v$ then $u$ is left-singular vec, $v$ is right, $\sigma$ is singular value.\\
+SVD: $A_{n\times p} = U_{n\times n}S_{n\times p}V_{p\times p}^T$, $U^TU = I$, $V^TV = I$, cols of $U$ are left-singular vecs (eigenvecs of $AA^T$), rows of $V^T$ are right-singular vecs (eigenvecs of $A^TA$), $S$ has singular values on diag (sqrt of eigenvals of $AA^T$ or $A^TA$).
 
 \section{Foundations}
 
