@@ -202,7 +202,7 @@ EM: $\theta^{t+1} \leftarrow \text{argmax}_\theta \sum_i E_{p(z|x_i;\theta^t)}[\
 
 \subsection*{Apply on LDA}
 
-Joint dist. $\log p(\theta, z, w; \alpha, \beta) = \log ( \prod_{d=1}^D [ p(\theta_d; \alpha) \prod_{n=1}^N p(z_{dn}; \theta_d) p(w_{dn} | z_{dn}; \beta) ] )$.\\
+Joint dist. $\log p(\theta, z, w; \alpha, \beta) = \log ( \prod_{d=1}^D [ p(\theta_d; \alpha) \prod_{n=1}^N p(z_{dn}; \theta_d) \times p(w_{dn} | z_{dn}; \beta) ] )$.\\
 $\Phi = \{\gamma, \phi\}$: params of variational approx.\\
 Single doc: $\log p(w; \alpha, \beta) \geq E_{q(\theta, z; \Phi)}[\log p(\theta, z, w; \alpha, \beta)] + H(q(\theta, z; \Phi))$.\\
 Mean-field: $q(\theta, z; \Phi) = q(\theta; \gamma)\prod_{n=1}^N q(z_n; \phi_n)$. $q(\theta; \gamma)$: Dirichlet with parameter $\gamma$. $q(z_i; \phi_i)$: multinomial with parameter $phi_i$.\\
