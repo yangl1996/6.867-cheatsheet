@@ -146,3 +146,42 @@ $p(x) = \sum_{k=1}^K \pi_k N(x|\mu_k, \Sigma_k)$, $\pi_k=P(y=k)$ (mixing compone
 Learn with maximizing marginal likelihood of $x$: $\max_{\{\pi\}, \{\mu\}, \{\Sigma\}}\sum_{i=1}^N\log p(x_i; \{\pi\},\{\mu\},\{\Sigma\})$.\\
 Expectation maximization: $\pi, \mu, \Sigma \leftarrow \text{argmax}_{\pi, \mu, \Sigma}\sum_{i=1}^N E_{p(y|x_i;\pi,\mu,\Sigma)}[\log p(y,x_i;\pi,\mu,\Sigma)]$.\\
 Two-cluster EM: responsibility $\gamma_i = P(y=2|x_i;\pi,\mu,\sigma^2) =  \frac{\pi\phi_2(x_i)}{(1-\pi)\phi_1(x_i)+\pi\phi_2(x_i)}$, $i=1, \dots, N$, $\phi$ is CDF of normal distribution. $\mu_1=\frac{\sum(1-\gamma_i)x_i}{\sum(1-\gamma_i)}$, $\sigma_1^2=\frac{\sum(1-\gamma_i)(x_i-\mu_i)^2}{\sum(1-\gamma_i)}$. For $\mu_2$, $\sigma_2^2$ replace $(1-\gamma_i)$ with $\gamma_i$. $\pi = \sum \gamma_i/N$
+
+\section{Topic Models}
+
+\subsection*{Bayesian Network}
+
+Specified as a directed acyclic graph $G = (V, E)$. One node $i \in V$ for each random variable $X_i$, one conditional prob. distribution per node $p(x_i|x_{\text{pa}(i)})$ ($\text{pa}$ for parent) specifying the variable's prob. conditioned on parents. Shaded node is evidence.\\
+$p(x_1, \dots, x_n) = \prod_{i\in V}p(x_i|x_{\text{pa}(i)})$.\\
+Plate notation: variables within a place replicated, conditionally independent.
+
+\subsection*{Mixture Model}
+
+$\theta \rightarrow z_d \rightarrow w_{id} \leftarrow \beta$.\\
+Topic-word distributions: $\beta$.\\
+Prior dist. over topics: $\theta$.\\
+Topic of doc $d$: $z_d$ ($d=1:D$).\\
+Word: $w_{id}$ ($i = 1 : N$).\\
+Sample topic $z|\theta \sim \theta$ (single topic each document). Sample word $w_i|z \sim \beta_z$. $\{\beta_t\}_{t=1}^T$ are topics, $\beta_t=p(w|z=t)$.
+
+\subsection*{Admixture Model (LDA)}
+
+$\alpha \rightarrow \theta_d \rightarrow z_{id} \rightarrow w_{id} \leftarrow \beta$.\\
+Dirichlet Hyperparams: $\alpha$.\\
+Topic dist. for doc: $\theta_d$.\\
+Topic of word $i$ of doc $d$: $z_{id}$.\\
+Word: $w_{id}$.\\
+Sample topic dist. (topic vector) $\theta \sim \text{Dirichlet}(\alpha_{1:T})$. For each word $i$ sample topic $z_i | \theta \sim \theta$. Then sample actual word $w_i | z_i \sim \beta_{z_i}$.\\
+Inference: compute $p(\theta|w)$ i.e. $\forall t, E[\theta_t | w] = \int \theta_t p(\theta|w) d\theta$. Requires marginalizing over all word-topic assignments $p(\theta|w) = \sum p(\theta,z|w) = \sum p(z|w)p(\theta|z)$.\\
+
+\subsection*{Variational Inference}
+
+Construct optimization problem over dist. $q(\theta)$ s.t. only need to compute $p(\theta, w)$ and $q(\theta) \approx p(\theta|w)$.\\
+$p(\theta, w) = \sum_z p(\theta,z,w) = \sum_z p(\theta) p(z|\theta) p(w|z) = \sum_z p(\theta) \prod_{i=1}^N p(z_i|\theta) p(w_i|z_i) = p(\theta) \prod_{i=1}^N \sum_{z_i} p(z_i|\theta) p(w_i|z_i)$.\\
+KL-divergence: $D(p||q) = \sum_z p(z)\log\frac{p(z)}{q(z)}$. (asymmetric)\\
+M-projection: $\text{argmin}_q D(p||q)$. I-projection: $\text{argmin}_q D(q||p)$. Differ when $q$ minimized over restricted set $Q$ and $p\not\in Q$.\\
+Latent model: $p(z, x)$, observe $X=x$, calc $p(z|x) \approx \text{argmin}_{q(z) \in Q} D(q(z)||p(z|x))$.\\
+$D(q||p) = \sum_z q(z)\ln \frac{q(z)}{p(z|x)} = \sum_z q(z)\ln\frac{q(z)p(x)}{p(z,x)} = \sum_z q(z)\ln\frac{q(z)}{p(z,x)}+\sum_z q(z)\ln p(x) = \sum_z q(z)\ln\frac{q(z)}{p(z,x)}+\ln p(x)$. Only need to min. $\sum_z q(z)\ln\frac{q(z)}{p(z,x)}$.\\
+Naive mean-field: $q(z) = \prod_{i=1}^m q(z_i)$.\\
+Mean-field: $q(\theta, z; \gamma, \phi) = q(\theta; \gamma) \prod_{i=1}^N q(z_i; \phi_i)$. $q(\theta; \gamma)$: Dirichlet with parameter $\gamma$; $q(z_i | \phi_i)$: multinomial with parameter $phi_i$.\\
+

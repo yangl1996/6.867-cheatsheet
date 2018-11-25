@@ -10,7 +10,12 @@ Chernoff Bound: Boolean $X$, $N$ i.i.d draws, $P(X_i=1)=p$, MLE of $p$ is $\hat{
 Hoeffding's inequality: $X \in [0, 1]$, $\mathbb{P}(\hat{X} - E[\hat{X}] \geq t) \leq e^{-2nt^2}$.\\
 Markov's inequality: for all $a > 0$ for nonnegative $Z$, $P(Z \geq a) \leq E[Z]/a$.\\
 Normal Distribution: $N(\mu, \sigma^2) = \frac{1}{\sqrt{2 \pi \sigma^2}}\exp(-(x-\mu)^2/2\sigma^2)$.\\
-Multi-variate ND: $N(\mu, \Sigma) = \frac{\exp(-\frac{1}{2}(x-\mu)^T\Sigma^{-1}(x-\mu))}{\sqrt{(2\pi)^k |\Sigma|}}$, $k$ is dim of $x$.
+Multi-variate ND: $N(\mu, \Sigma) = \frac{\exp(-\frac{1}{2}(x-\mu)^T\Sigma^{-1}(x-\mu))}{\sqrt{(2\pi)^k |\Sigma|}}$, $k$ is dim of $x$.\\
+Dirichlet Dist: $p(x_1, \dots, x_K; \alpha_1, \dots, \alpha_K)=\frac{1}{B(\alpha)}\prod_{i=1}^K x_i^{\alpha_i - 1}$.\\
+$B(\alpha) = \frac{\prod_{i=1}^K\Gamma(\alpha_i)}{\Gamma(\sum_{i=1}^K\alpha_i)}$.\\
+$\alpha_0 = \sum_i \alpha_i$, $E[x_i]= \frac{\alpha_i}{\alpha_0}$, $\text{Var}[x_i] = \frac{\alpha_i(\alpha_0-\alpha_i)}{\alpha_0^2(\alpha_0+1)}$.\\
+Prob. vector (Stat. vector): vector with $\geq 0$ entries that add up to one.\\
+Multinomial Dist: $p(x_1, \dots, x_k; n, p_1, \dots, p_k)$, extract $n$ balls of $k$ colors, $x_i$ is number of color $i$, $p_i$ is prob. of color $i$.
 
 \section{Matrix Differential}
 
