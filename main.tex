@@ -44,9 +44,7 @@ leftmargin=0mm,rightmargin=0mm,skipbelow=0mm,skipabove=0mm,
 \begin{mdframed}[style=header]
 \footnotesize
 \sffamily
-MIT 6.867 Exam 1 Cheatsheet\\
-Lei Yang, Oct. 2018\\
-leiy@csail.mit.edu
+MIT 6.867 Exam 2 Cheatsheet - Lei Yang <leiy@csail.mit.edu> - Nov. 2018
 \end{mdframed}
 }
 
@@ -89,8 +87,8 @@ leiy@csail.mit.edu
    \process@cols\mult@gfirstbox{%
 %%%%% START CHANGE
 \ifnum\count@=\numexpr\mult@rightbox+2\relax
-          \setbox\count@\vsplit\@cclv to \dimexpr \dimen@-1cm\relax
-\setbox\count@\vbox to \dimen@{\vbox to 1cm{\header}\unvbox\count@\vss}%
+          \setbox\count@\vsplit\@cclv to \dimexpr \dimen@-0.5cm\relax
+\setbox\count@\vbox to \dimen@{\vbox to 0.5cm{\header}\unvbox\count@\vss}%
 \else
       \setbox\count@\vsplit\@cclv to \dimen@
 \fi
@@ -179,7 +177,7 @@ leiy@csail.mit.edu
 
 \begin{document}
 \small
-\begin{multicols*}{4}
+\begin{multicols*}{3}
 \input{section1}
 \input{section2}
 \end{multicols*}

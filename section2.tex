@@ -177,8 +177,7 @@ Inference: compute $p(\theta|w)$ i.e. $\forall t, E[\theta_t | w] = \int \theta_
 \subsection*{Variational Inference}
 
 Construct optimization problem over dist. $q(\theta)$ s.t. only need to compute $p(\theta, w)$ and $q(\theta) \approx p(\theta|w)$.\\
-$p(\theta, w) = \sum_z p(\theta,z,w) = \sum_z p(\theta) p(z|\theta) p(w|z) = \sum_z p(\theta) \prod_{i=1}^N p(z_i|\theta) p(w_i|z_i)$\\
-$= p(\theta) \prod_{i=1}^N \sum_{z_i} p(z_i|\theta) p(w_i|z_i)$.\\
+$p(\theta, w) = \sum_z p(\theta,z,w) = \sum_z p(\theta) p(z|\theta) p(w|z) = \sum_z p(\theta) \prod_{i=1}^N p(z_i|\theta) p(w_i|z_i) = p(\theta) \prod_{i=1}^N \sum_{z_i} p(z_i|\theta) p(w_i|z_i)$.\\
 KL-divergence: $D(p||q) = \sum_z p(z)\log\frac{p(z)}{q(z)}$. (asymmetric)\\
 M-projection: $\text{argmin}_q D(p||q)$. I-projection: $\text{argmin}_q D(q||p)$. Differ when $q$ minimized over restricted set $Q$ and $p\not\in Q$.\\
 Latent model: $p(z, x)$, observe $X=x$, calc $p(z|x) \approx \text{argmin}_{q(z) \in Q} D(q(z)||p(z|x))$.\\
@@ -203,8 +202,7 @@ EM: $\theta^{t+1} \leftarrow \text{argmax}_\theta \sum_i E_{p(z|x_i;\theta^t)}[\
 
 \subsection*{Apply on LDA}
 
-Joint dist. $\log p(\theta, z, w; \alpha, \beta) = \log ( \prod_{d=1}^D [ p(\theta_d; \alpha)$\\
-$\prod_{n=1}^N p(z_{dn}; \theta_d) p(w_{dn} | z_{dn}; \beta) ] )$.\\
+Joint dist. $\log p(\theta, z, w; \alpha, \beta) = \log ( \prod_{d=1}^D [ p(\theta_d; \alpha) \prod_{n=1}^N p(z_{dn}; \theta_d) p(w_{dn} | z_{dn}; \beta) ] )$.\\
 $\Phi = \{\gamma, \phi\}$: params of variational approx.\\
 Single doc: $\log p(w; \alpha, \beta) \geq E_{q(\theta, z; \Phi)}[\log p(\theta, z, w; \alpha, \beta)] + H(q(\theta, z; \Phi))$.\\
 Mean-field: $q(\theta, z; \Phi) = q(\theta; \gamma)\prod_{n=1}^N q(z_n; \phi_n)$. $q(\theta; \gamma)$: Dirichlet with parameter $\gamma$. $q(z_i; \phi_i)$: multinomial with parameter $phi_i$.\\
