@@ -177,11 +177,38 @@ Inference: compute $p(\theta|w)$ i.e. $\forall t, E[\theta_t | w] = \int \theta_
 \subsection*{Variational Inference}
 
 Construct optimization problem over dist. $q(\theta)$ s.t. only need to compute $p(\theta, w)$ and $q(\theta) \approx p(\theta|w)$.\\
-$p(\theta, w) = \sum_z p(\theta,z,w) = \sum_z p(\theta) p(z|\theta) p(w|z) = \sum_z p(\theta) \prod_{i=1}^N p(z_i|\theta) p(w_i|z_i) = p(\theta) \prod_{i=1}^N \sum_{z_i} p(z_i|\theta) p(w_i|z_i)$.\\
+$p(\theta, w) = \sum_z p(\theta,z,w) = \sum_z p(\theta) p(z|\theta) p(w|z) = \sum_z p(\theta) \prod_{i=1}^N p(z_i|\theta) p(w_i|z_i)$\\
+$= p(\theta) \prod_{i=1}^N \sum_{z_i} p(z_i|\theta) p(w_i|z_i)$.\\
 KL-divergence: $D(p||q) = \sum_z p(z)\log\frac{p(z)}{q(z)}$. (asymmetric)\\
 M-projection: $\text{argmin}_q D(p||q)$. I-projection: $\text{argmin}_q D(q||p)$. Differ when $q$ minimized over restricted set $Q$ and $p\not\in Q$.\\
 Latent model: $p(z, x)$, observe $X=x$, calc $p(z|x) \approx \text{argmin}_{q(z) \in Q} D(q(z)||p(z|x))$.\\
 $D(q||p) = \sum_z q(z)\ln \frac{q(z)}{p(z|x)} = \sum_z q(z)\ln\frac{q(z)p(x)}{p(z,x)} = \sum_z q(z)\ln\frac{q(z)}{p(z,x)}+\sum_z q(z)\ln p(x) = \sum_z q(z)\ln\frac{q(z)}{p(z,x)}+\ln p(x)$. Only need to min. $\sum_z q(z)\ln\frac{q(z)}{p(z,x)}$.\\
 Naive mean-field: $q(z) = \prod_{i=1}^m q(z_i)$.\\
-Mean-field: $q(\theta, z; \gamma, \phi) = q(\theta; \gamma) \prod_{i=1}^N q(z_i; \phi_i)$. $q(\theta; \gamma)$: Dirichlet with parameter $\gamma$; $q(z_i | \phi_i)$: multinomial with parameter $phi_i$.\\
 
+\section{Variational Inference}
+
+Model: $z \rightarrow x$, $z \sim p(z)$, $x \sim p(x|z)$, $x$ observed.
+Observed data: $D = {x_1, \dots, x_N}$, $x_i \sim p(x)$ i.i.d.\\
+Log-likelihood: $L(\theta) = \sum_{i=1}^N \log p(x_i; \theta)$.\\
+
+\subsection*{Evidence Lower Bound (ELBO)}
+
+$\log p(x) = \log \int_z p(x, z) = \log \int_z \frac{q(z)p(x, z)}{q(z)} = \log E_{z \sim q(z)}\left[\frac{p(x, z)}{q(z)}\right] \geq \int_z q(z) \log \frac{p(x, z)}{q(z)} = L(x; \theta, \phi) = E_{q(z)}[\log p(x, z)] + H(q(z))$. First term is exp. of joint dist., second term is entropy.\\
+$\log p(x) - L(x; \theta, \phi) = \log p(x) - \int_z q(z) \log \frac{p(x, z)}{q(z)} = \int_z q(z)\log(p(x) - \frac{p(x, z)}{q(z)}) = \int_z q(z) \log \frac{p(z)q(z)}{p(x, z)} = D(q(z)||p(z|x))$. So when $D(q(z; \phi)||p(z | x)) = 0$, $q(z; \phi) = p(z | x)$.\\
+For whole dataset $D$, $\max_\theta \sum_i \log p(x_i; \theta) \geq \max_{\theta, \phi_1, \dots, \phi_N} \sum_i L(x_i; \theta, \phi_i)$ (ELBO).\\
+Variational learning maximizes ELBO ($\max_{\theta, \phi_1, \dots, \phi_N} \sum_i L(x_i; \theta, \phi_i)$).\\
+Optimal $q(z; \phi)$ in the bound corresponds to $p(z|x)$.\\
+The better $q(z; \phi)$ approximates $p(z|x)$, the smaller $D(q(z;\phi)||p(z|x))$ we achieve, the closer ELBO be to $\log p(x;\theta)$.
+EM: $\theta^{t+1} \leftarrow \text{argmax}_\theta \sum_i E_{p(z|x_i;\theta^t)}[\log p(Z, x_i; \theta)]$.\\
+
+\subsection*{Apply on LDA}
+
+Joint dist. $\log p(\theta, z, w; \alpha, \beta) = \log ( \prod_{d=1}^D [ p(\theta_d; \alpha)$\\
+$\prod_{n=1}^N p(z_{dn}; \theta_d) p(w_{dn} | z_{dn}; \beta) ] )$.\\
+$\Phi = \{\gamma, \phi\}$: params of variational approx.\\
+Single doc: $\log p(w; \alpha, \beta) \geq E_{q(\theta, z; \Phi)}[\log p(\theta, z, w; \alpha, \beta)] + H(q(\theta, z; \Phi))$.\\
+Mean-field: $q(\theta, z; \Phi) = q(\theta; \gamma)\prod_{n=1}^N q(z_n; \phi_n)$. $q(\theta; \gamma)$: Dirichlet with parameter $\gamma$. $q(z_i; \phi_i)$: multinomial with parameter $phi_i$.\\
+Variational inference algo: For single doc $d$, update $\phi_{dn}^k$ for $n=1, \dots, N$, $k=1, \dots, K$; update $\gamma_d$; repeat until convg. $\phi_{dn}^k$: prob. $n$-th word drawn from topic $k$. $\gamma_d$: Dirichlet param, sampling from this gives us topic proportions in this doc. Guarantted to reach local posterior params.\\
+Variational Learning (variational EM): For all docs do VI individually, then update $\beta_k \propto \sum_{d=1}^D \sum_{n=1}^N \phi_{dn}^k w_{dn}$ for $k=1, \dots, K$. Not guaranteed to reach local optimal.\\
+Stochastic VI: Process one document, multiply effect by $D$.\\
+SVI Algo: Sample doc $d$ from dataset. Do VI for $d$. $\hat{\beta}_k \propto D \sum_{n=1}^N \phi_{dn^k} w_{dn}$ for $k=1, \dots, K$. Update $\beta^t \leftarrow (1-\rho)\beta^{t-1} + \rho \hat{\beta}$. $\rho$ is learning rate.
