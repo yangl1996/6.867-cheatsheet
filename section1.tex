@@ -1,5 +1,13 @@
+PCA: calc. gradient and let it be zero. union bounds.\\
+KL: take apart the $\log$ and remove unrelevant terms.\\
+Max. likelihood: set prob. same as frequency.\\
+Lanrange: max. $f(x)$ s.t. $g(x)=0$. Consider $L(x, \lambda) = f(x) - \lambda g(x)$. Can apply multiple constraints.\\
+VL: for hidden variable, take expectation over its dist. when cal. likelihood (expectation max.).\\
+Prove zero grad.: introduce perturbation. Exp. of perturbation will be zero.
+
 \section{Probability}
 
+$\text{Var}[X] = E[X^2] - E[X]^2$.\\
 $\mathbb{E}(AB) \geq \mathbb{E}(A)\mathbb{E}(B)$.\\
 $\text{cvxfunc}(E[X]) \leq E[\text{cvxfunc}(X)]$. (like $x^2$)\\
 $\text{concave}(E[X]) \geq E[\text{concave}(X)]$. (like $-x^2$)\\
@@ -8,7 +16,9 @@ $\sigma'(x) = \sigma(x)(1-\sigma(x))$.\\
 $\mathbb{P}(X, Y) = \mathbb{P}(X|Y)\mathbb{P}(Y) = \mathbb{P}(Y|X)\mathbb{P}(X)$.\\
 Cond. Independ.: $\mathbb{P}(X|Y, Z) = \mathbb{P}(X|Z)$.\\
 Chernoff Bound: Boolean $X$, $N$ i.i.d draws, $P(X_i=1)=p$, MLE of $p$ is $\hat{p}=\frac{1}{N}\sum x_i$. For all $p \in [0, 1]$, $\epsilon > 0$, $P(|p-\hat{p}| > \epsilon) \leq 2e^{-2N\epsilon^2}$.\\
-Hoeffding's inequality: $X \in [0, 1]$, $\mathbb{P}(\hat{X} - E[\hat{X}] \geq t) \leq e^{-2nt^2}$.\\
+Alternative: $P(X \geq a) \leq E[e^{tX}]/e^{ta}$, $t>0$.\\
+Hoeffding's inequality: $X \in [0, 1]$, $n$ samples, $\mathbb{P}(\bar{X} - E[\bar{X}] \geq t) \leq e^{-2nt^2}$, $\bar{X}$ is empirical mean.\\
+Generalization: $X_i$ in $[a_i, b_i]$, then $\leq \exp(-\frac{2n^2 t^2}{\sum_i (b_i-a_i)^2})$. For sum $S$ instesd of $\bar{X}$, $\leq \exp(-\frac{2 t^2}{\sum_i (b_i-a_i)^2})$.\\
 Markov's inequality: for all $a > 0$ for nonnegative $Z$, $P(Z \geq a) \leq E[Z]/a$.\\
 Normal Distribution: $N(\mu, \sigma^2) = \frac{1}{\sqrt{2 \pi \sigma^2}}\exp(-(x-\mu)^2/2\sigma^2)$.\\
 Multi-variate ND: $N(\mu, \Sigma) = \frac{\exp(-\frac{1}{2}(x-\mu)^T\Sigma^{-1}(x-\mu))}{\sqrt{(2\pi)^k |\Sigma|}}$, $k$ is dim of $x$.\\
@@ -30,7 +40,7 @@ $\frac{\partial A^{-1}}{\partial \alpha} = -A^{-1}\frac{\partial A}{\partial \al
 
 Norm: $||x||_p = (\sum |x_i|^p)^{1/p}$.\\
 Nuclear Norm: $||Z||_* = \sum_k\sigma_k$, $Z = \sum_k \sigma_k u_k v_k^T$ (SVD).\\
-$\text{trace}$: sum of elements on main diag.\\
+$\text{trace}$: sum of elements on main diag. $\text{tr}(AB) = \text{tr}(BA)$.\\
 $\Phi(\Phi^T \Phi)^{-1}\Phi^T$ takes $v$ and projects onto space spanned by columns of $\Phi$. Lease-square solution $f=\Phi w^*$, $w^*=(\Phi^T \Phi)^{-1}\Phi^T Y$ corresponds to an projection of target Y onto span $\Phi$.\\
 $Av=\sigma u$ and $A^Tu=\sigma v$ then $u$ is left-singular vec, $v$ is right, $\sigma$ is singular value.\\
 SVD: $A_{n\times p} = U_{n\times n}S_{n\times p}V_{p\times p}^T$, $U^TU = I$, $V^TV = I$, cols of $U$ are left-singular vecs (eigenvecs of $AA^T$), rows of $V^T$ are right-singular vecs (eigenvecs of $A^TA$), $S$ has singular values on diag (sqrt of eigenvals of $AA^T$ or $A^TA$).

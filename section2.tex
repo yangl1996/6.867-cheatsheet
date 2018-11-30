@@ -128,7 +128,8 @@ Find most similar user/item and use that rating. Can do weighted.
 \subsection*{K-Means}
 
 Pick $K$ random points as cluster centers. Assign points to nearest center. Move center to average of assigned points. Stop when no assignment changes.\\
-Theorem: each iter. monotonically decreases the objective $\sum_{i=1}^N \min_{k\in1:K}||x_i - \mu_k||_2^2$, $\mu_k$ is cluster center.
+Theorem: each iter. monotonically decreases the objective $\sum_{i=1}^N \min_{k\in1:K}||x_i - \mu_k||_2^2$, $\mu_k$ is cluster center.\\
+K-means always splits at equal distance between two centroids (centers).
 
 \subsection*{Agglomerative Clustering}
 
@@ -144,8 +145,8 @@ $P(Y)$: choose a cluster $Y=1, \dots, K$ ($K$ clusters).\\
 $P(X|Y)$: each cluster generates data $\sim N(\mu_k, \Sigma_k)$.\\
 $p(x) = \sum_{k=1}^K \pi_k N(x|\mu_k, \Sigma_k)$, $\pi_k=P(y=k)$ (mixing component).\\
 Learn with maximizing marginal likelihood of $x$: $\max_{\{\pi\}, \{\mu\}, \{\Sigma\}}\sum_{i=1}^N\log p(x_i; \{\pi\},\{\mu\},\{\Sigma\})$.\\
-Expectation maximization: $\pi, \mu, \Sigma \leftarrow \text{argmax}_{\pi, \mu, \Sigma}\sum_{i=1}^N E_{p(y|x_i;\pi,\mu,\Sigma)}[\log p(y,x_i;\pi,\mu,\Sigma)]$.\\
-Two-cluster EM: responsibility $\gamma_i = P(y=2|x_i;\pi,\mu,\sigma^2) =  \frac{\pi\phi_2(x_i)}{(1-\pi)\phi_1(x_i)+\pi\phi_2(x_i)}$, $i=1, \dots, N$, $\phi$ is CDF of normal distribution. $\mu_1=\frac{\sum(1-\gamma_i)x_i}{\sum(1-\gamma_i)}$, $\sigma_1^2=\frac{\sum(1-\gamma_i)(x_i-\mu_i)^2}{\sum(1-\gamma_i)}$. For $\mu_2$, $\sigma_2^2$ replace $(1-\gamma_i)$ with $\gamma_i$. $\pi = \sum \gamma_i/N$
+EM: $\pi, \mu, \Sigma \leftarrow \text{argmax}_{\pi, \mu, \Sigma}\sum_{i=1}^N E_{p(y|x_i;\pi,\mu,\Sigma)}[\log p(y,x_i;\pi,\mu,\Sigma)]$.\\
+Two-cluster EM: responsibility $\gamma_{ik} = P(y=k|x_i;\pi,\mu,\sigma^2) =  \frac{\pi_k\phi_k(x_i)}{\sum_j \pi_j \phi_j(x_i)}$, $i=1, \dots, N$, $\phi$ is PDF of normal distribution. $\mu_k=\frac{\sum_i \gamma_{ik} x_i}{\sum_i \gamma_{ik}}$, $\sigma_k^2=\frac{\sum_i \gamma_{ik} (x_i-\mu_k)^2}{\sum \gamma_{ik}}$, $\pi_k = \sum_i \gamma_{ik}/N$.
 
 \section{Topic Models}
 
@@ -182,13 +183,13 @@ KL-divergence: $D(p||q) = \sum_z p(z)\log\frac{p(z)}{q(z)}$. (asymmetric)\\
 M-projection: $\text{argmin}_q D(p||q)$. I-projection: $\text{argmin}_q D(q||p)$. Differ when $q$ minimized over restricted set $Q$ and $p\not\in Q$.\\
 Latent model: $p(z, x)$, observe $X=x$, calc $p(z|x) \approx \text{argmin}_{q(z) \in Q} D(q(z)||p(z|x))$.\\
 $D(q||p) = \sum_z q(z)\ln \frac{q(z)}{p(z|x)} = \sum_z q(z)\ln\frac{q(z)p(x)}{p(z,x)} = \sum_z q(z)\ln\frac{q(z)}{p(z,x)}+\sum_z q(z)\ln p(x) = \sum_z q(z)\ln\frac{q(z)}{p(z,x)}+\ln p(x)$. Only need to min. $\sum_z q(z)\ln\frac{q(z)}{p(z,x)}$.\\
-Naive mean-field: $q(z) = \prod_{i=1}^m q(z_i)$.\\
+Naive mean-field: $q(z) = \prod_{i=1}^m q(z_i)$.
 
 \section{Variational Inference}
 
 Model: $z \rightarrow x$, $z \sim p(z)$, $x \sim p(x|z)$, $x$ observed.
 Observed data: $D = {x_1, \dots, x_N}$, $x_i \sim p(x)$ i.i.d.\\
-Log-likelihood: $L(\theta) = \sum_{i=1}^N \log p(x_i; \theta)$.\\
+Log-likelihood: $L(\theta) = \sum_{i=1}^N \log p(x_i; \theta)$.
 
 \subsection*{Evidence Lower Bound (ELBO)}
 
@@ -198,7 +199,7 @@ For whole dataset $D$, $\max_\theta \sum_i \log p(x_i; \theta) \geq \max_{\theta
 Variational learning maximizes ELBO ($\max_{\theta, \phi_1, \dots, \phi_N} \sum_i L(x_i; \theta, \phi_i)$).\\
 Optimal $q(z; \phi)$ in the bound corresponds to $p(z|x)$.\\
 The better $q(z; \phi)$ approximates $p(z|x)$, the smaller $D(q(z;\phi)||p(z|x))$ we achieve, the closer ELBO be to $\log p(x;\theta)$.
-EM: $\theta^{t+1} \leftarrow \text{argmax}_\theta \sum_i E_{p(z|x_i;\theta^t)}[\log p(Z, x_i; \theta)]$.\\
+EM: $\theta^{t+1} \leftarrow \text{argmax}_\theta \sum_i E_{p(z|x_i;\theta^t)}[\log p(Z, x_i; \theta)]$.
 
 \subsection*{Apply on LDA}
 
